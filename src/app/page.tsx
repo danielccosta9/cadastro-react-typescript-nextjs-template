@@ -1,8 +1,11 @@
+'use client'
+import { BrowserRouter } from "react-router-dom"
+import AppRoutes from "./routes"
+
 export default function Home() {
   return (
-    <div>
-      <h1>Home</h1>
-      <p>Some content</p>
-    </div>
+    <BrowserRouter>
+      <AppRoutes />
+    </BrowserRouter>
   )
 }
