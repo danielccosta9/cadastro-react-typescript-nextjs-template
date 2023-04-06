@@ -24,7 +24,14 @@ export default function RootLayout({
           href="https://fonts.googleapis.com/icon?family=Material+Icons"
         />
       </head>
-      <body>{children}</body>
+      <body style={
+        {
+          margin: 0,
+          padding: 0,
+        }
+      }>
+        {children}
+      </body>
     </html>
   )
 }
