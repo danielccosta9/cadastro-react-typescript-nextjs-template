@@ -1,16 +1,30 @@
 'use client';
-import { Button } from '@mui/material';
 import { Routes, Route, Navigate } from 'react-router-dom';
-import { useAppThemeContext } from '../shared/contexts';
 
-export default function AppRoutes() {
-    const { themeName, toggleTheme } = useAppThemeContext();
+import { useDrawerContext } from '../shared/contexts';
+import { useEffect } from 'react';
+import { Dashboard } from '../pages';
+
+export const AppRoutes = () => {
+    const { setDrawerOptions } = useDrawerContext();
+
+    useEffect(() => {
+        setDrawerOptions([
+            {
+                label: 'Home',
+                icon: 'home',
+                path: '/home',
+            },
+        ]);
+    }, [setDrawerOptions]);
+
     return (
         <Routes>
-            <Route path="/pagina-inicial" element={
-            <Button variant='contained' color='primary' onClick={toggleTheme}> Teste</Button>} 
-            />
-            <Route path="*" element={<Navigate to={"/pagina-inicial"} />} />
+            <Route path="/home" element={
+               <Dashboard />
+            } />
+            
+            <Route path="*" element={<Navigate to="/home" />} />
         </Routes>
     );
 }

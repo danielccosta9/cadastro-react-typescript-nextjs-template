@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-page-custom-font */
 export const metadata = {
   title: 'Template de Cadastro',
   description: 'Template de Cadastro',
