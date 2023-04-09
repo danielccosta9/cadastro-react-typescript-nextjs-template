@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { Icon, IconButton, Theme, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Icon, IconButton, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { Box } from '@mui/system';
 
 import { useDrawerContext } from '../contexts';
@@ -32,7 +32,6 @@ export const LayoutBaseDePagina: React.FC<ILayoutBaseDePaginaProps> = ({ childre
                     whiteSpace="nowrap"
                     textOverflow="ellipses"
                     variant={smDown ? 'h5' : mdDown ? 'h4' : 'h3'}
-                    color={theme.palette.primary.dark}
                 >
                     {titulo}
                 </Typography>

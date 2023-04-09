@@ -11,20 +11,20 @@ export const AppRoutes = () => {
     useEffect(() => {
         setDrawerOptions([
             {
-                label: 'Home',
-                icon: 'home',
-                path: '/home',
+                label: 'Dashboard',
+                icon: 'dashboard',
+                path: '/dashboard',
             },
         ]);
     }, [setDrawerOptions]);
 
     return (
         <Routes>
-            <Route path="/home" element={
+            <Route path="/dashboard" element={
                <Dashboard />
             } />
             
-            <Route path="*" element={<Navigate to="/home" />} />
+            <Route path="*" element={<Navigate to="/dashboard" />} />
         </Routes>
     );
 }
