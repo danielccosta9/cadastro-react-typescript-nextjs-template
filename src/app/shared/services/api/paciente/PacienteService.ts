@@ -1,8 +1,8 @@
 import { Environment } from "@/app/shared/environment";
 import { Api } from "../axios-config";
 
-interface IListagemPaciente {
-    id: number;
+export interface IListagemPaciente {
+    paciente_id: number;
     paciente_nome: string;
     paciente_cpf: string;
     paciente_nascimento: string;
@@ -10,8 +10,8 @@ interface IListagemPaciente {
     paciente_residencia: string;
 }
 
-interface IDetalhesPaciente {
-    id: number;
+export interface IDetalhesPaciente {
+    paciente_id: number;
     paciente_nome: string;
     paciente_cpf: string;
     paciente_nascimento: string;
@@ -42,9 +42,9 @@ const getAll = async (page = 1, filter = ''): Promise<TPacientesComTotalCount | 
     }
 }
 
-const getById = async (id: number): Promise<IDetalhesPaciente | Error> => {
+const getById = async (paciente_id: number): Promise<IDetalhesPaciente | Error> => {
     try {
-      const { data } = await Api.get(`paciente/${id}`);
+      const { data } = await Api.get(`paciente/${paciente_id}`);
   
       if (data) {
         return data;
@@ -57,12 +57,12 @@ const getById = async (id: number): Promise<IDetalhesPaciente | Error> => {
     }
   };
   
-  const create = async (dados: Omit<IDetalhesPaciente, 'id'>): Promise<number | Error> => {
+  const create = async (dados: Omit<IDetalhesPaciente, 'paciente_id'>): Promise<number | Error> => {
     try {
       const { data } = await Api.post<IDetalhesPaciente>('paciente', dados);
   
       if (data) {
-        return data.id;
+        return data.paciente_id;
       }
   
       return new Error('Erro ao criar o registro.');
@@ -72,18 +72,18 @@ const getById = async (id: number): Promise<IDetalhesPaciente | Error> => {
     }
   };
   
-  const updateById = async (id: number, dados: IDetalhesPaciente): Promise<void | Error> => {
+  const updateById = async (paciente_id: number, dados: IDetalhesPaciente): Promise<void | Error> => {
     try {
-      await Api.put(`paciente/${id}`, dados);
+      await Api.put(`paciente/${paciente_id}`, dados);
     } catch (error) {
       console.error(error);
       return new Error((error as { message: string }).message || 'Erro ao atualizar o registro.');
     }
   };
   
-  const deleteById = async (id: number): Promise<void | Error> => {
+  const deleteById = async (paciente_id: number): Promise<void | Error> => {
     try {
-      await Api.delete(`paciente/${id}`);
+      await Api.delete(`paciente/${paciente_id}`);
     } catch (error) {
       console.error(error);
       return new Error((error as { message: string }).message || 'Erro ao apagar o registro.');

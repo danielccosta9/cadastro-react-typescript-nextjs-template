@@ -23,6 +23,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/pages/dashboard/Dashboard.jsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/pages/dashboard/Dashboard.jsx", "src/app/pages/pacientes/ListagemDePacientes.tsx"],
   "exclude": ["node_modules"]
 }
