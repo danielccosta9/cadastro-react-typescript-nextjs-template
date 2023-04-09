@@ -5,6 +5,7 @@ import { useDrawerContext } from '../shared/contexts';
 import {
   Dashboard,
   ListagemDePacientes,
+  ListagemDeHospitais,
 } from '../pages';
 
 export const AppRoutes = () => {
@@ -22,6 +23,11 @@ export const AppRoutes = () => {
         path: '/pacientes',
         label: 'Pacientes',
       },
+      {
+        icon: 'local_hospital',
+        path: '/hospitais',
+        label: 'Hospitais',
+      },
     ]);
   }, [ setDrawerOptions]);
 
@@ -29,6 +35,7 @@ export const AppRoutes = () => {
     <Routes>
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/pacientes" element={<ListagemDePacientes />} />
+      <Route path="/hospitais" element={<ListagemDeHospitais />} />
 
       <Route path="*" element={<Navigate to="/dashboard" />} />
     </Routes>
