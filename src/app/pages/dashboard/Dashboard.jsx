@@ -2,7 +2,9 @@ import { useEffect, useState } from 'react';
 import { Box, Card, Grid, Typography, useTheme, Icon, styled } from '@mui/material';
 import Axios from 'axios';
 
-import { LayoutBaseDePagina } from '../../shared/layouts';
+import { LayoutBaseDePagina } from '@/app/shared/layouts';
+import { Environment } from '@/app/shared/environment';
+import { FerramentasDeDetalhe } from '@/app/shared/components';
 
 const StyledCard = styled(Card)(({ theme }) => ({
   display: 'flex',
@@ -36,19 +38,20 @@ export const Dashboard = () => {
   const theme = useTheme();
   const [paciente, setPaciente] = useState([]);
   const [agendados, setAgendados] = useState([]);
-  const baseURLPaciente = "https://api-paciente.cyclic.app/paciente";
-  const baseURLAgendados = "https://api-paciente.cyclic.app/agenda";
+  const baseURLPaciente = `${Environment.URL_BASE}paciente`;
+  const baseURLAgendados = `${Environment.URL_BASE}agenda`;
+  
 
 
   useEffect(() => {
     Axios.get(baseURLPaciente)
       .then(json => setPaciente(json.data))
-  }, [])
+  }, [baseURLPaciente])
 
   useEffect(() => {
     Axios.get(baseURLAgendados)
       .then(json => setAgendados(json.data))
-  }, [])
+  }, [baseURLAgendados])
 
 
   // Formatar a data
@@ -278,6 +281,10 @@ export const Dashboard = () => {
   return (
     <LayoutBaseDePagina
       titulo='Página inicial'
+      barraDeFerramentas={
+        <FerramentasDeDetalhe 
+          />
+      }
     >
       <Box width='100%' display='flex'>
         <Grid container margin={2}>

@@ -1,5 +1,6 @@
 import {
   Avatar,
+  Box,
   Divider,
   Drawer,
   Icon,
@@ -11,10 +12,7 @@ import {
   useTheme
 } from '@mui/material';
 import { useMatch, useNavigate, useResolvedPath } from 'react-router-dom';
-import { Box } from '@mui/system';
-
 import { useAppThemeContext, useDrawerContext } from '../../contexts';
-
 interface IListItemLinkProps {
   to: string;
   icon: string;
