@@ -283,6 +283,8 @@ export const Dashboard = () => {
       titulo='Página inicial'
       barraDeFerramentas={
         <FerramentasDeDetalhe 
+          mostrarBotaoSalvar
+          mostrarBotaoSalvarEFechar
           />
       }
     >
