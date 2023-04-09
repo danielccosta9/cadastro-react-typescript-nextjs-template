@@ -155,13 +155,13 @@ export const ListagemDePacientes: React.FC = () => {
                     <TableFooter>
                         {isLoading && (
                             <TableRow>
-                                <TableCell colSpan={3}>
+                                <TableCell colSpan={12}>
                                     <LinearProgress variant='indeterminate' />
                                 </TableCell>
                             </TableRow>
                         )}
                         <TableRow>
-                            <TableCell colSpan={6}>
+                            <TableCell colSpan={12}>
                                 <TablePagination                            
                                     page={page}
                                     component="div"

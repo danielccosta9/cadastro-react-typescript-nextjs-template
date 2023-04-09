@@ -1,6 +1,6 @@
 import { FerramentasDaListagem } from "@/app/shared/components";
 import { LayoutBaseDePagina } from "@/app/shared/layouts";
-import { HospitalService, IListagemHospital } from "@/app/shared/services/api/hospital/HospitalService";
+import { AgendaService, IListagemAgenda } from "@/app/shared/services/api/agenda/AgendaService";
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Environment } from "@/app/shared/environment";
@@ -21,12 +21,12 @@ import {
     TableRow,
 } from '@mui/material';
 
-export const ListagemDeHospitais: React.FC = () => {
+export const ListagemDaAgenda: React.FC = () => {
 
     const [searchParams, setSearchParams] = useSearchParams();
     const { debounce } = useDebounce();
     const navigate = useNavigate();
-    const [rows, setRows] = useState<IListagemHospital[]>([]);
+    const [rows, setRows] = useState<IListagemAgenda[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [totalCount, setTotalCount] = useState(0);
     const [page, setPage] = useState(0);
@@ -45,7 +45,7 @@ export const ListagemDeHospitais: React.FC = () => {
     useEffect(() => {
         setIsLoading(true);
         debounce(() => {
-            HospitalService.getAll(pagina, busca)
+            AgendaService.getAll(pagina, busca)
                 .then((result) => {
                     setIsLoading(false);
 
@@ -61,15 +61,15 @@ export const ListagemDeHospitais: React.FC = () => {
         });
     }, [busca, debounce, pagina]);
 
-    const handleDelete = (hospital_id: number) => {
-        if (confirm('Realmente deseja apagar?')) {
-            HospitalService.deleteById(hospital_id)
+    const handleDelete = (agenda_id: number, paciente_nome: string) => {
+        if (confirm(`${paciente_nome} Viajou?`)) {
+            AgendaService.deleteById(agenda_id)
                 .then(result => {
                     if (result instanceof Error) {
                         alert(result.message);
                     } else {
                         setRows(oldRows => [
-                            ...oldRows.filter(oldRow => oldRow.hospital_id !== hospital_id),
+                            ...oldRows.filter(oldRow => oldRow.agenda_id !== agenda_id),
                         ]);
                         alert('Registro apagado com sucesso!');
                     }
@@ -88,22 +88,22 @@ export const ListagemDeHospitais: React.FC = () => {
         setSearchParams({ pagina: '1' }, { replace: true });
     };
 
-    const filteredHospital = useMemo(() => {
-        return rows.filter(hospital => {
-            return hospital.hospital_nome.toLowerCase().includes(busca.toLowerCase());
+    const filteredAgenda = useMemo(() => {
+        return rows.filter(agenda => {
+            return agenda.paciente_nome.toLowerCase().includes(busca.toLowerCase());
         });
     }, [busca, rows]);
 
-    const quantidadeDePaginas = filteredHospital.length
+    const quantidadeDePaginas = filteredAgenda.length
 
     return (
         <LayoutBaseDePagina
-            titulo='Listagem dos Hospitais'
+            titulo='Listagem dos Agendados'
             barraDeFerramentas={
                 <FerramentasDaListagem
                     mostrarInputBusca
                     textoDaBusca={busca}
-                    textoBotaoNovo='Novo hospital'
+                    textoBotaoNovo='Novo agenda'
                     aoClicarEmNovo={() => navigate('/pessoas/detalhe/nova')}
                     aoMudarTextoDeBusca={texto => setSearchParams({ busca: texto, pagina: '1' }, { replace: true })}
                 />
@@ -113,31 +113,44 @@ export const ListagemDeHospitais: React.FC = () => {
                 <Table>
                     <TableHead>
                         <TableRow>
-                            <TableCell align="left">Nome do Hospital</TableCell>
-                            <TableCell align="left">Estado</TableCell>
-                            <TableCell width={100} align="center">Ação</TableCell>
+                            <TableCell align="left">Data</TableCell>
+                            <TableCell align="left">Nome do Paciente</TableCell>
+                            <TableCell align="left">CPF</TableCell>
+                            <TableCell align="left">Contato</TableCell>
+                            <TableCell align="left">Saída</TableCell>
+                            <TableCell align="left">Marcado</TableCell>
+                            <TableCell width={300} align="left">Nome do Hospital</TableCell>
+                            <TableCell width={50} align="left">Carro</TableCell>
+                            <TableCell width={50} align="right">Viajou</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {filteredHospital
+                        {filteredAgenda
                             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                            .map((hospital, index) => (
+                            .map((agenda, index) => (
                                 <TableRow
                                     key={index}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                     hover>
-                                    <TableCell align="left">{hospital.hospital_nome}</TableCell>
-                                    <TableCell align="left">{hospital.hospital_estado}</TableCell>
+                                    <TableCell align="left">{
+                                        new Date(agenda.agenda_data).toLocaleDateString('pt-BR', {
+                                            day: '2-digit',
+                                            month: '2-digit',
+                                            year: '2-digit',
+                                        })
+                                    }</TableCell>
+                                    <TableCell align="left">{agenda.paciente_nome}</TableCell>
+                                    <TableCell align="left">{agenda.paciente_cpf}</TableCell>
+                                    <TableCell align="left">{agenda.paciente_telefone}</TableCell>
+                                    <TableCell align="left">{agenda.agenda_saida}</TableCell>
+                                    <TableCell align="left">{agenda.agenda_marcado}</TableCell>
+                                    <TableCell align="left">{agenda.hospital_nome}</TableCell>
+                                    <TableCell align="left">{agenda.agenda_carro}</TableCell>
                                     <TableCell align="right">
                                         <IconButton
-                                            onClick={handleDelete.bind(this, hospital.hospital_id)}
+                                            onClick={handleDelete.bind(this, agenda.agenda_id, agenda.paciente_nome)}
                                         >
-                                            <Icon color="error">delete</Icon>
-                                        </IconButton>
-                                        <IconButton
-                                            onClick={() => navigate(`/pessoas/detalhe/${hospital.hospital_id}`)}
-                                        >
-                                            <Icon color="secondary">edit</Icon>
+                                            <Icon color="success">done</Icon>
                                         </IconButton>
                                     </TableCell>
                                 </TableRow>
@@ -156,7 +169,7 @@ export const ListagemDeHospitais: React.FC = () => {
                         )}
                         <TableRow>
                             <TableCell colSpan={12}>
-                                <TablePagination                            
+                                <TablePagination
                                     page={page}
                                     component="div"
                                     rowsPerPage={rowsPerPage}
