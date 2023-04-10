@@ -1,6 +1,6 @@
 import { LayoutBaseDePagina } from '@/app/shared/layouts';
-import { FerramentasDeDetalhe } from '@/app/shared/components';
 import { CardDashboard } from './card-list/index';
+import { Box, Paper } from '@mui/material';
 
 
 export const Dashboard = () => {
@@ -8,15 +8,19 @@ export const Dashboard = () => {
   return (
     <LayoutBaseDePagina
       titulo='Página inicial'
-      barraDeFerramentas={
-        <FerramentasDeDetalhe 
-          mostrarBotaoSalvar
-          mostrarBotaoSalvarEFechar
-          />
-      }
     >
-      <CardDashboard />
-      
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          width: '100%',
+          marginTop: '3rem',
+        }}        
+      >
+        <CardDashboard />
+      </Box>
+
     </LayoutBaseDePagina>
   );
 };

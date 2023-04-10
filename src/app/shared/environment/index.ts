@@ -14,5 +14,5 @@ export const Environment = {
     /**
      * Url base de consultado dos dados dessa aplicação
      */
-    // URL_BASE: 'https://api-paciente.cyclic.app/',
+    URL_BASE: 'https://api-paciente.cyclic.app/',
 };

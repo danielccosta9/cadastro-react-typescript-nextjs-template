@@ -109,7 +109,7 @@ export const ListagemDeHospitais: React.FC = () => {
                 />
             }
         >
-            <TableContainer component={Paper} variant="outlined" sx={{ m: 1, width: '100wh' }}>
+            <TableContainer component={Paper} variant="outlined" sx={{ m: 1, width: 'auto' }}>
                 <Table>
                     <TableHead>
                         <TableRow>
