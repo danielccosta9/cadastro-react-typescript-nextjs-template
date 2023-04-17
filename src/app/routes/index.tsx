@@ -4,6 +4,7 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import { useDrawerContext } from '../shared/contexts';
 import {
   Dashboard,
+  DetalheDepacientes,
   ListagemDaAgenda,
   ListagemDePacientes,
   ListagemDeHospitais,
@@ -42,6 +43,7 @@ export const AppRoutes = () => {
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/agenda" element={<ListagemDaAgenda />} />
       <Route path="/pacientes" element={<ListagemDePacientes />} />
+      <Route path="/pacientes/detalhe" element={<DetalheDepacientes />} />
       <Route path="/hospitais" element={<ListagemDeHospitais />} />
 
       <Route path="*" element={<Navigate to="/dashboard" />} />
