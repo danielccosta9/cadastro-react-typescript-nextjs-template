@@ -34,8 +34,10 @@ export const CardList = () => {
     const theme = useTheme();
     const [paciente, setPaciente] = useState([]);
     const [agendados, setAgendados] = useState([]);
+    const [agendadosAuto, setAgendadosAuto] = useState([]);
     const baseURLPaciente = `${Environment.URL_BASE}paciente`;
     const baseURLAgendados = `${Environment.URL_BASE}agenda`;
+    const baseURLAgendadosAuto = `${Environment.URL_BASE}agendaauto`;
 
     useEffect(() => {
         Axios.get(baseURLPaciente)
@@ -47,25 +49,32 @@ export const CardList = () => {
             .then(json => setAgendados(json.data))
     }, [baseURLAgendados])
 
+    useEffect(() => {
+        Axios.get(baseURLAgendadosAuto)
+            .then(json => setAgendadosAuto(json.data))
+    }, [baseURLAgendadosAuto])
+
+
+    const agenda = agendados.concat(agendadosAuto);
 
     // Quantidade de pacientes agendados por dia
     const qtdForDay = [
-        agendados.filter((item) => {
+        agenda.filter((item) => {
             return item.agenda_data === ArrayOfWeek[0]
         }),
-        agendados.filter((item) => {
+        agenda.filter((item) => {
             return item.agenda_data === ArrayOfWeek[1]
         }),
-        agendados.filter((item) => {
+        agenda.filter((item) => {
             return item.agenda_data === ArrayOfWeek[2]
         }),
-        agendados.filter((item) => {
+        agenda.filter((item) => {
             return item.agenda_data === ArrayOfWeek[3]
         }),
-        agendados.filter((item) => {
+        agenda.filter((item) => {
             return item.agenda_data === ArrayOfWeek[4]
         }),
-        agendados.filter((item) => {
+        agenda.filter((item) => {
             return item.agenda_data === ArrayOfWeek[5]
         }),
     ]
@@ -208,7 +217,7 @@ export const CardList = () => {
         },
         {
             name: 'Nº de Pacientes Agendados',
-            amount: agendados.length + ' - Pacientes',
+            amount: agenda.length + ' - Pacientes',
             icon: 'folder_shared'
         },
         {
