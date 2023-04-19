@@ -20,6 +20,7 @@ import {
     TablePagination,
     TableRow,
 } from '@mui/material';
+import { format } from "path";
 
 export const ListagemDaAgenda: React.FC = () => {
 
@@ -90,7 +91,11 @@ export const ListagemDaAgenda: React.FC = () => {
 
     const filteredAgenda = useMemo(() => {
         return rows.filter(agenda => {
-            return agenda.paciente_nome.toLowerCase().includes(busca.toLowerCase());
+            return (
+                agenda.paciente_nome.toLowerCase().includes(busca.toLowerCase()) ||
+                agenda.agenda_data.toLowerCase().includes(busca.toLowerCase())
+                
+            )
         });
     }, [busca, rows]);
 
@@ -133,11 +138,11 @@ export const ListagemDaAgenda: React.FC = () => {
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                     hover>
                                     <TableCell align="left">{
-                                        new Date(agenda.agenda_data).toLocaleDateString('pt-BR', {
+                                        new Intl.DateTimeFormat('pt-BR', {
                                             day: '2-digit',
                                             month: '2-digit',
                                             year: '2-digit',
-                                        })
+                                        }).format(new Date(agenda.agenda_data).getTime() + 1000 * 60 * 60 * 24)
                                     }</TableCell>
                                     <TableCell align="left">{agenda.paciente_nome}</TableCell>
                                     <TableCell align="left">{agenda.paciente_cpf}</TableCell>
