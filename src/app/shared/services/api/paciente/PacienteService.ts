@@ -8,6 +8,7 @@ export interface IListagemPaciente {
     paciente_nascimento: string;
     paciente_telefone: string;
     paciente_residencia: string;
+    paciente_comorbidade: string;
 }
 
 export interface IDetalhesPaciente {
@@ -17,6 +18,7 @@ export interface IDetalhesPaciente {
     paciente_nascimento: string;
     paciente_telefone: string;
     paciente_residencia: string;
+    paciente_comorbidade: string;
 }
 
 type TPacientesComTotalCount = {

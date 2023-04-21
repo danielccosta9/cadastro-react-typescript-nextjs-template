@@ -104,7 +104,7 @@ export const ListagemDePacientes: React.FC = () => {
                     mostrarInputBusca
                     textoDaBusca={busca}
                     textoBotaoNovo='Novo Paciente'
-                    aoClicarEmNovo={() => navigate('/pessoas/detalhe/nova')}
+                    aoClicarEmNovo={() => navigate('/pacientes/detalhe/novo')}
                     aoMudarTextoDeBusca={texto => setSearchParams({ busca: texto, pagina: '1' }, { replace: true })}
                 />
             }
@@ -141,7 +141,7 @@ export const ListagemDePacientes: React.FC = () => {
                                             <Icon color="error">delete</Icon>
                                         </IconButton>
                                         <IconButton
-                                            onClick={() => navigate(`/pessoas/detalhe/${paciente.paciente_id}`)}
+                                            onClick={() => navigate(`/pacientes/detalhe/${paciente.paciente_id}`)}
                                         >
                                             <Icon color="secondary">edit</Icon>
                                         </IconButton>

@@ -43,7 +43,7 @@ export const AppRoutes = () => {
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/agenda" element={<ListagemDaAgenda />} />
       <Route path="/pacientes" element={<ListagemDePacientes />} />
-      <Route path="/pacientes/detalhe" element={<DetalheDepacientes />} />
+      <Route path="/pacientes/detalhe/:paciente_id" element={<DetalheDepacientes />} />
       <Route path="/hospitais" element={<ListagemDeHospitais />} />
 
       <Route path="*" element={<Navigate to="/dashboard" />} />
