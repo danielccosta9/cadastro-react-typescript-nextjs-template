@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
-import { Box, Grid, LinearProgress, Paper, Typography } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
 import * as yup from 'yup';
 
 import { PacienteService } from "@/app/shared/services/api/paciente/PacienteService";
 import { FerramentasDeDetalhe } from '@/app/shared/components';
 import { LayoutBaseDePagina } from '@/app/shared/layouts';
+import { IVFormErrors, VForm, VTextField, useVForm } from '@/app/shared/forms';
+import { Form } from '@unform/web';
 
 
 interface IFormData {
@@ -14,7 +15,7 @@ interface IFormData {
   paciente_nascimento: string;
   paciente_telefone: string;
   paciente_residencia: string;
-  paciente_comorbidades: string;
+  paciente_comorbidade: string;
 }
 const formValidationSchema: yup.Schema<IFormData> = yup.object().shape({
   paciente_nome: yup.string().required('O nome é obrigatório').min(3, 'O nome deve ter no mínimo 3 caracteres'),
@@ -22,12 +23,13 @@ const formValidationSchema: yup.Schema<IFormData> = yup.object().shape({
   paciente_nascimento: yup.string().required('A data de nascimento é obrigatória'),
   paciente_telefone: yup.string().required('O telefone é obrigatório').min(14, 'O telefone deve ter no mínimo 11 caracteres'),
   paciente_residencia: yup.string().required('A residência é obrigatória').min(3, 'A residência deve ter no mínimo 3 caracteres'),
-  paciente_comorbidades: yup.string().required('As comorbidades são obrigatórias').min(3, 'As comorbidades devem ter no mínimo 3 caracteres'),
+  paciente_comorbidade: yup.string().required('As comorbidades são obrigatórias').min(3, 'As comorbidades devem ter no mínimo 3 caracteres'),
 
 });
 
 export const DetalheDepacientes: React.FC = () => {
   const { paciente_id = 'novo' } = useParams<'paciente_id'>();
+  const { formRef, save, saveAndClose, isSaveAndClose } = useVForm();
   const navigate = useNavigate();
 
 
@@ -42,13 +44,42 @@ export const DetalheDepacientes: React.FC = () => {
           setIsLoading(false);
           if (result instanceof Error) {
             alert(result.message);
-            navigate('/paciente');
+            navigate('/pacientes');
           } else {
             setNome(result.paciente_nome);
+            console.log(result);
+            formRef.current?.setData(result);
           }
         });
     }
-  }, [navigate, paciente_id]);
+  }, [formRef, navigate, paciente_id]);
+
+  const handleSave = (data: IFormData) => {
+    setIsLoading(true);
+    if (paciente_id === 'novo') {
+      PacienteService.create(data)
+        .then(result => {
+          setIsLoading(false);
+          if (result instanceof Error) {
+            alert(result.message);
+          } else {
+            alert('Registro salvo com sucesso!');
+            navigate('/pacientes');
+          }
+        });
+    } else {
+      PacienteService.updateById(Number(paciente_id), {paciente_id: Number(paciente_id), ...data})
+        .then(result => {
+          setIsLoading(false);
+          if (result instanceof Error) {
+            alert(result.message);
+          } else {
+            alert('Registro salvo com sucesso!');
+            navigate('/pacientes');
+          }
+        });
+    }
+  };
 
 
   const handleDelete = (id: number) => {
@@ -59,7 +90,7 @@ export const DetalheDepacientes: React.FC = () => {
             alert(result.message);
           } else {
             alert('Registro apagado com sucesso!');
-            navigate('/paciente');
+            navigate('/pacientes');
           }
         });
     }
@@ -76,15 +107,23 @@ export const DetalheDepacientes: React.FC = () => {
           mostrarBotaoNovo={paciente_id !== 'novo'}
           mostrarBotaoApagar={paciente_id !== 'novo'}
 
-          aoClicarEmVoltar={() => navigate('/paciente')}
+          aoClicarEmVoltar={() => navigate('/pacientes')}
           aoClicarEmApagar={() => handleDelete(Number(paciente_id))}
-          aoClicarEmNovo={() => navigate('/paciente/detalhe/novo')}
+          aoClicarEmNovo={() => navigate('/pacientes/detalhe/novo')}
+          aoClicarEmSalvarEFechar={() => formRef.current?.submitForm()}
+          aoClicarEmSalvar={() => formRef.current?.submitForm()}
         />
       }
     >
-      <p>
-        Detalhe de Paciente: {paciente_id}
-      </p>
-    </LayoutBaseDePagina>
+      <Form ref={formRef} onSubmit={handleSave}>
+        <VTextField name='paciente_nome' label='Nome' />
+        <VTextField name='paciente_cpf' label='CPF' />
+        <VTextField name='paciente_nascimento' label='Data de Nascimento' />
+        <VTextField name='paciente_telefone' label='Telefone' />
+        <VTextField name='paciente_residencia' label='Residência' />
+        <VTextField name='paciente_comorbidade' label='Comorbidades' />
+      </Form>
+
+    </LayoutBaseDePagina >
   );
 };

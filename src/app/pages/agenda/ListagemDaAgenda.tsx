@@ -108,7 +108,7 @@ export const ListagemDaAgenda: React.FC = () => {
                 <FerramentasDaListagem
                     mostrarInputBusca
                     textoDaBusca={busca}
-                    textoBotaoNovo='Novo agenda'
+                    textoBotaoNovo='Agendar'
                     aoClicarEmNovo={() => navigate('/pessoas/detalhe/nova')}
                     aoMudarTextoDeBusca={texto => setSearchParams({ busca: texto, pagina: '1' }, { replace: true })}
                 />

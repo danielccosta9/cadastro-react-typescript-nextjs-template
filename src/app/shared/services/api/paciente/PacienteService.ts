@@ -61,7 +61,7 @@ const getById = async (paciente_id: number): Promise<IDetalhesPaciente | Error> 
   
   const create = async (dados: Omit<IDetalhesPaciente, 'paciente_id'>): Promise<number | Error> => {
     try {
-      const { data } = await Api.post<IDetalhesPaciente>('paciente', dados);
+      const { data } = await Api.post<IDetalhesPaciente>('/paciente', dados);
   
       if (data) {
         return data.paciente_id;

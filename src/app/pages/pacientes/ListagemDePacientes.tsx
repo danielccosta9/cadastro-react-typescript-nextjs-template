@@ -103,7 +103,7 @@ export const ListagemDePacientes: React.FC = () => {
                 <FerramentasDaListagem
                     mostrarInputBusca
                     textoDaBusca={busca}
-                    textoBotaoNovo='Novo Paciente'
+                    textoBotaoNovo='Novo'
                     aoClicarEmNovo={() => navigate('/pacientes/detalhe/novo')}
                     aoMudarTextoDeBusca={texto => setSearchParams({ busca: texto, pagina: '1' }, { replace: true })}
                 />
