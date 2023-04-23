@@ -7,6 +7,7 @@ import { FerramentasDeDetalhe } from '@/app/shared/components';
 import { LayoutBaseDePagina } from '@/app/shared/layouts';
 import { IVFormErrors, VForm, VTextField, useVForm } from '@/app/shared/forms';
 import { Form } from '@unform/web';
+import { Box, Grid, LinearProgress, Paper } from '@mui/material';
 
 
 interface IFormData {
@@ -23,7 +24,7 @@ const formValidationSchema: yup.Schema<IFormData> = yup.object().shape({
   pacienteNascimento: yup.string().required('A data de nascimento é obrigatória'),
   pacienteTelefone: yup.string().required('O telefone é obrigatório').min(14, 'O telefone deve ter no mínimo 11 caracteres'),
   pacienteResidencia: yup.string().required('A residência é obrigatória').min(3, 'A residência deve ter no mínimo 3 caracteres'),
-  pacienteComorbidade: yup.string().required('As comorbidades são obrigatórias').min(3, 'As comorbidades devem ter no mínimo 3 caracteres'),
+  pacienteComorbidade: yup.string().required('A comorbidade é obrigatória').min(3, 'A comorbidade deve ter no mínimo 3 caracteres'),
 
 });
 
@@ -54,32 +55,58 @@ export const DetalheDepacientes: React.FC = () => {
     }
   }, [formRef, navigate, id]);
 
-  const handleSave = (data: IFormData) => {
-    setIsLoading(true);
-    if (id === 'novo') {
-      PacienteService.create(data)
-        .then(result => {
-          setIsLoading(false);
-          if (result instanceof Error) {
-            alert(result.message);
-          } else {
-            alert('Registro salvo com sucesso!');
-            navigate('/paciente');
-          }
+  const handleSave = (dados: IFormData) => {
+
+    formValidationSchema.
+      validate(dados, { abortEarly: false })
+      .then((dadosValidados) => {
+        setIsLoading(true);
+
+        if (id === 'novo') {
+          PacienteService
+            .create(dadosValidados)
+            .then((result) => {
+              setIsLoading(false);
+
+              if (result instanceof Error) {
+                alert(result.message);
+              } else {
+                if (isSaveAndClose()) {
+                  navigate('/paciente');
+                } else {
+                  navigate(`/paciente/detalhe/${result}`);
+                }
+              }
+            });
+        } else {
+          PacienteService
+            .updateById(Number(id), { id: Number(id), ...dadosValidados })
+            .then((result) => {
+              setIsLoading(false);
+
+              if (result instanceof Error) {
+                alert(result.message);
+              } else {
+                if (isSaveAndClose()) {
+                  navigate('/paciente');
+                }
+              }
+            });
+        }
+      })
+      .catch((errors: yup.ValidationError) => {
+        const validationErrors: IVFormErrors = {};
+
+        errors.inner.forEach(error => {
+          if (!error.path) return;
+
+          validationErrors[error.path] = error.message;
         });
-    } else {
-      PacienteService.updateById(Number(id), {id: Number(id), ...data})
-        .then(result => {
-          setIsLoading(false);
-          if (result instanceof Error) {
-            alert(result.message);
-          } else {
-            alert('Registro salvo com sucesso!');
-            navigate('/paciente');
-          }
-        });
-    }
+
+        formRef.current?.setErrors(validationErrors);
+      });
   };
+
 
 
   const handleDelete = (id: number) => {
@@ -103,25 +130,81 @@ export const DetalheDepacientes: React.FC = () => {
       barraDeFerramentas={
         <FerramentasDeDetalhe
           textoBotaoNovo='Novo'
-          mostrarBotaoSalvarEFechar
           mostrarBotaoNovo={id !== 'novo'}
           mostrarBotaoApagar={id !== 'novo'}
 
           aoClicarEmVoltar={() => navigate('/paciente')}
           aoClicarEmApagar={() => handleDelete(Number(id))}
           aoClicarEmNovo={() => navigate('/paciente/detalhe/novo')}
-          aoClicarEmSalvarEFechar={() => formRef.current?.submitForm()}
           aoClicarEmSalvar={() => formRef.current?.submitForm()}
         />
       }
     >
       <Form ref={formRef} onSubmit={handleSave}>
-        <VTextField name='pacienteNome' label='Nome' />
-        <VTextField name='pacienteCPF' label='CPF' />
-        <VTextField name='pacienteNascimento' label='Data de Nascimento' />
-        <VTextField name='pacienteTelefone' label='Telefone' />
-        <VTextField name='pacienteResidencia' label='Residência' />
-        <VTextField name='pacienteComorbidade' label='Comorbidades' />
+        <Box margin={1} display="flex" flexDirection="column" component={Paper} variant="outlined">
+
+          {isLoading && (
+            <Grid item >
+              <LinearProgress />
+            </Grid>
+          )}
+
+          <Grid container direction="row" padding={2} spacing={2}>
+            <Grid item xs={12} sm={6}>
+              <VTextField
+                name='pacienteNome'
+                label='Nome'
+                variant='outlined'
+                fullWidth
+              />
+            </Grid>
+
+            <Grid item xs={12} sm={3}>
+              <VTextField
+                name='pacienteNascimento'
+                label='Data de Nascimento'
+                variant='outlined'
+                fullWidth
+              />
+            </Grid>
+            <Grid item xs={12} sm={3}>
+              <VTextField
+                name='pacienteCPF'
+                label='CPF'
+                variant='outlined'
+                fullWidth
+              />
+            </Grid>
+
+          </Grid>
+          <Grid container direction="row" padding={2} spacing={2}>
+
+            <Grid item xs={12} sm={3}>
+              <VTextField
+                name='pacienteTelefone'
+                label='Telefone'
+                variant='outlined'
+                fullWidth
+              />
+            </Grid>
+            <Grid item xs={12} sm={5}>
+              <VTextField
+                name='pacienteResidencia'
+                label='Residência'
+                variant='outlined'
+                fullWidth
+              />
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <VTextField
+                name='pacienteComorbidade'
+                label='Comorbidade'
+                variant='outlined'
+                fullWidth
+              />
+            </Grid>
+          </Grid>
+        </Box>
       </Form>
 
     </LayoutBaseDePagina >
