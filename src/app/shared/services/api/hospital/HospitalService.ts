@@ -2,15 +2,15 @@ import { Environment } from "@/app/shared/environment";
 import { Api } from "../axios-config";
 
 export interface IListagemHospital {
-    hospital_id: number;
-    hospital_nome: string;
-    hospital_estado: string;
+    id: number;
+    hospitalNome: string;
+    hospitalEstado: string;
 }
 
 export interface IDetalhesHospital {
-    hospital_id: number;
-    hospital_nome: string;
-    hospital_estado: string;
+    id: number;
+    hospitalNome: string;
+    hospitalEstado: string;
 }
 
 type THospitalComTotalCount = {
@@ -19,7 +19,7 @@ type THospitalComTotalCount = {
 }
 
 const getAll = async (page = 1, filter = ''): Promise<THospitalComTotalCount | Error> => {
-    const urlRelativa = `hospital?_page=${page}&_limit=${Environment.LIMITE_DE_LINHAS}&hospital_nome_like=${filter}`
+    const urlRelativa = `hospital?_page=${page}&_limit=${Environment.LIMITE_DE_LINHAS}&hospitalNome_like=${filter}`
     try {
         const { data, headers } = await Api.get(urlRelativa);
         if (data) {
@@ -36,9 +36,9 @@ const getAll = async (page = 1, filter = ''): Promise<THospitalComTotalCount | E
     }
 }
 
-const getById = async (hospital_id: number): Promise<IDetalhesHospital | Error> => {
+const getById = async (id: number): Promise<IDetalhesHospital | Error> => {
     try {
-      const { data } = await Api.get(`hospital/${hospital_id}`);
+      const { data } = await Api.get(`hospital/${id}`);
   
       if (data) {
         return data;
@@ -51,12 +51,12 @@ const getById = async (hospital_id: number): Promise<IDetalhesHospital | Error> 
     }
   };
   
-  const create = async (dados: Omit<IDetalhesHospital, 'hospital_id'>): Promise<number | Error> => {
+  const create = async (dados: Omit<IDetalhesHospital, 'id'>): Promise<number | Error> => {
     try {
       const { data } = await Api.post<IDetalhesHospital>('hospital', dados);
   
       if (data) {
-        return data.hospital_id;
+        return data.id;
       }
   
       return new Error('Erro ao criar o registro.');
@@ -66,18 +66,18 @@ const getById = async (hospital_id: number): Promise<IDetalhesHospital | Error> 
     }
   };
   
-  const updateById = async (hospital_id: number, dados: IDetalhesHospital): Promise<void | Error> => {
+  const updateById = async (id: number, dados: IDetalhesHospital): Promise<void | Error> => {
     try {
-      await Api.put(`hospital/${hospital_id}`, dados);
+      await Api.put(`hospital/${id}`, dados);
     } catch (error) {
       console.error(error);
       return new Error((error as { message: string }).message || 'Erro ao atualizar o registro.');
     }
   };
   
-  const deleteById = async (hospital_id: number): Promise<void | Error> => {
+  const deleteById = async (id: number): Promise<void | Error> => {
     try {
-      await Api.delete(`hospital/${hospital_id}`);
+      await Api.delete(`hospital/${id}`);
     } catch (error) {
       console.error(error);
       return new Error((error as { message: string }).message || 'Erro ao apagar o registro.');

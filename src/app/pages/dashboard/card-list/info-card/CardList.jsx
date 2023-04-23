@@ -34,10 +34,9 @@ export const CardList = () => {
     const theme = useTheme();
     const [paciente, setPaciente] = useState([]);
     const [agendados, setAgendados] = useState([]);
-    const [agendadosAuto, setAgendadosAuto] = useState([]);
     const baseURLPaciente = `${Environment.URL_BASE}paciente`;
     const baseURLAgendados = `${Environment.URL_BASE}agenda`;
-    const baseURLAgendadosAuto = `${Environment.URL_BASE}agendaauto`;
+  
 
     useEffect(() => {
         Axios.get(baseURLPaciente)
@@ -49,96 +48,91 @@ export const CardList = () => {
             .then(json => setAgendados(json.data))
     }, [baseURLAgendados])
 
-    useEffect(() => {
-        Axios.get(baseURLAgendadosAuto)
-            .then(json => setAgendadosAuto(json.data))
-    }, [baseURLAgendadosAuto])
 
+    const agenda = agendados
 
-    const agenda = agendados.concat(agendadosAuto);
-
-    // Quantidade de pacientes agendados por dia
+    // Quantidade de paciente agendados por dia
     const qtdForDay = [
         agenda.filter((item) => {
-            return item.agenda_data === ArrayOfWeek[0]
+            return item.agendaData === ArrayOfWeek[0]
         }),
         agenda.filter((item) => {
-            return item.agenda_data === ArrayOfWeek[1]
+            return item.agendaData === ArrayOfWeek[1]
         }),
         agenda.filter((item) => {
-            return item.agenda_data === ArrayOfWeek[2]
+            return item.agendaData === ArrayOfWeek[2]
         }),
         agenda.filter((item) => {
-            return item.agenda_data === ArrayOfWeek[3]
+            return item.agendaData === ArrayOfWeek[3]
         }),
         agenda.filter((item) => {
-            return item.agenda_data === ArrayOfWeek[4]
+            return item.agendaData === ArrayOfWeek[4]
         }),
         agenda.filter((item) => {
-            return item.agenda_data === ArrayOfWeek[5]
+            return item.agendaData === ArrayOfWeek[5]
         }),
     ]
 
     // Por dia - Manhã ou Tarde e Total
     const qtdForDayAndTime = [
         qtdForDay[0].filter((item) => {
-            return item.agenda_saida < '11:00'
+            return item.agendaHoraSaida < '11:00'
         }).length,
         qtdForDay[0].filter((item) => {
-            return item.agenda_saida >= '11:00'
+            return item.agendaHoraSaida >= '11:00'
         }).length,
         qtdForDay[0].filter((item) => {
-            return item.agenda_saida
+            return item.agendaHoraSaida
         }).length,
 
         qtdForDay[1].filter((item) => {
-            return item.agenda_saida < '11:00'
+            return item.agendaHoraSaida < '11:00'
         }).length,
         qtdForDay[1].filter((item) => {
-            return item.agenda_saida >= '11:00'
+            return item.agendaHoraSaida >= '11:00'
         }).length,
         qtdForDay[1].filter((item) => {
-            return item.agenda_saida
+            return item.agendaHoraSaida
         }).length,
 
         qtdForDay[2].filter((item) => {
-            return item.agenda_saida < '11:00'
+            return item.agendaHoraSaida < '11:00'
         }).length,
         qtdForDay[2].filter((item) => {
-            return item.agenda_saida >= '11:00'
+            return item.agendaHoraSaida >= '11:00'
         }).length,
         qtdForDay[2].filter((item) => {
-            return item.agenda_saida
+            return item.agendaHoraSaida
         }).length,
 
         qtdForDay[3].filter((item) => {
-            return item.agenda_saida < '11:00'
+            return item.agendaHoraSaida < '11:00'
         }).length,
         qtdForDay[3].filter((item) => {
-            return item.agenda_saida >= '11:00'
+            return item.agendaHoraSaida >= '11:00'
         }).length,
         qtdForDay[3].filter((item) => {
-            return item.agenda_saida
+            return item.agendaHoraSaida
         }).length,
 
         qtdForDay[4].filter((item) => {
-            return item.agenda_saida < '11:00'
+            return item.agendaHoraSaida < '11:00'
         }).length,
         qtdForDay[4].filter((item) => {
-            return item.agenda_saida >= '11:00'
+            return item.agendaHoraSaida >= '11:00'
         }).length,
         qtdForDay[4].filter((item) => {
-            return item.agenda_saida
+            return item.agendaHoraSaida
         }).length,
 
         qtdForDay[5].filter((item) => {
-            return item.agenda_saida < '11:00'
+            return item.agendaHoraSaida < '11:00'
         }).length,
         qtdForDay[5].filter((item) => {
-            return item.agenda_saida >= '11:00'
+            return item.agendaHoraSaida >= '11:00'
         }).length,
         qtdForDay[5].filter((item) => {
-            return item.agenda_saida
+            return item.agendaHoraSaida
         }).length,
     ]
 
@@ -216,13 +210,13 @@ export const CardList = () => {
             icon: 'folder_shared'
         },
         {
-            name: 'Nº de Pacientes Agendados',
-            amount: agenda.length + ' - Pacientes',
+            name: 'Nº de Paciente Agendados',
+            amount: agenda.length + ' - Paciente',
             icon: 'folder_shared'
         },
         {
-            name: 'Nº de Pacientes Cadastrados',
-            amount: paciente.length + ' - Pacientes',
+            name: 'Nº de Paciente Cadastrados',
+            amount: paciente.length + ' - Paciente',
             icon: 'folder_shared'
         },
     ];

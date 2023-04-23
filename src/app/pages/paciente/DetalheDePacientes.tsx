@@ -10,25 +10,25 @@ import { Form } from '@unform/web';
 
 
 interface IFormData {
-  paciente_nome: string;
-  paciente_cpf: string;
-  paciente_nascimento: string;
-  paciente_telefone: string;
-  paciente_residencia: string;
-  paciente_comorbidade: string;
+  pacienteNome: string;
+  pacienteCPF: string;
+  pacienteNascimento: string;
+  pacienteTelefone: string;
+  pacienteResidencia: string;
+  pacienteComorbidade: string;
 }
 const formValidationSchema: yup.Schema<IFormData> = yup.object().shape({
-  paciente_nome: yup.string().required('O nome é obrigatório').min(3, 'O nome deve ter no mínimo 3 caracteres'),
-  paciente_cpf: yup.string().required('O CPF é obrigatório').min(14, 'O CPF deve ter no mínimo 11 caracteres'),
-  paciente_nascimento: yup.string().required('A data de nascimento é obrigatória'),
-  paciente_telefone: yup.string().required('O telefone é obrigatório').min(14, 'O telefone deve ter no mínimo 11 caracteres'),
-  paciente_residencia: yup.string().required('A residência é obrigatória').min(3, 'A residência deve ter no mínimo 3 caracteres'),
-  paciente_comorbidade: yup.string().required('As comorbidades são obrigatórias').min(3, 'As comorbidades devem ter no mínimo 3 caracteres'),
+  pacienteNome: yup.string().required('O nome é obrigatório').min(3, 'O nome deve ter no mínimo 3 caracteres'),
+  pacienteCPF: yup.string().required('O CPF é obrigatório').min(14, 'O CPF deve ter no mínimo 11 caracteres'),
+  pacienteNascimento: yup.string().required('A data de nascimento é obrigatória'),
+  pacienteTelefone: yup.string().required('O telefone é obrigatório').min(14, 'O telefone deve ter no mínimo 11 caracteres'),
+  pacienteResidencia: yup.string().required('A residência é obrigatória').min(3, 'A residência deve ter no mínimo 3 caracteres'),
+  pacienteComorbidade: yup.string().required('As comorbidades são obrigatórias').min(3, 'As comorbidades devem ter no mínimo 3 caracteres'),
 
 });
 
 export const DetalheDepacientes: React.FC = () => {
-  const { paciente_id = 'novo' } = useParams<'paciente_id'>();
+  const { id = 'novo' } = useParams<'id'>();
   const { formRef, save, saveAndClose, isSaveAndClose } = useVForm();
   const navigate = useNavigate();
 
@@ -37,26 +37,26 @@ export const DetalheDepacientes: React.FC = () => {
   const [nome, setNome] = useState('');
 
   useEffect(() => {
-    if (paciente_id !== 'novo') {
+    if (id !== 'novo') {
       setIsLoading(true);
-      PacienteService.getById(Number(paciente_id))
+      PacienteService.getById(Number(id))
         .then((result) => {
           setIsLoading(false);
           if (result instanceof Error) {
             alert(result.message);
-            navigate('/pacientes');
+            navigate('/paciente');
           } else {
-            setNome(result.paciente_nome);
+            setNome(result.pacienteNome);
             console.log(result);
             formRef.current?.setData(result);
           }
         });
     }
-  }, [formRef, navigate, paciente_id]);
+  }, [formRef, navigate, id]);
 
   const handleSave = (data: IFormData) => {
     setIsLoading(true);
-    if (paciente_id === 'novo') {
+    if (id === 'novo') {
       PacienteService.create(data)
         .then(result => {
           setIsLoading(false);
@@ -64,18 +64,18 @@ export const DetalheDepacientes: React.FC = () => {
             alert(result.message);
           } else {
             alert('Registro salvo com sucesso!');
-            navigate('/pacientes');
+            navigate('/paciente');
           }
         });
     } else {
-      PacienteService.updateById(Number(paciente_id), {paciente_id: Number(paciente_id), ...data})
+      PacienteService.updateById(Number(id), {id: Number(id), ...data})
         .then(result => {
           setIsLoading(false);
           if (result instanceof Error) {
             alert(result.message);
           } else {
             alert('Registro salvo com sucesso!');
-            navigate('/pacientes');
+            navigate('/paciente');
           }
         });
     }
@@ -90,7 +90,7 @@ export const DetalheDepacientes: React.FC = () => {
             alert(result.message);
           } else {
             alert('Registro apagado com sucesso!');
-            navigate('/pacientes');
+            navigate('/paciente');
           }
         });
     }
@@ -99,29 +99,29 @@ export const DetalheDepacientes: React.FC = () => {
 
   return (
     <LayoutBaseDePagina
-      titulo={paciente_id === 'novo' ? 'Novo Paciente' : nome}
+      titulo={id === 'novo' ? 'Novo Paciente' : nome}
       barraDeFerramentas={
         <FerramentasDeDetalhe
           textoBotaoNovo='Novo'
           mostrarBotaoSalvarEFechar
-          mostrarBotaoNovo={paciente_id !== 'novo'}
-          mostrarBotaoApagar={paciente_id !== 'novo'}
+          mostrarBotaoNovo={id !== 'novo'}
+          mostrarBotaoApagar={id !== 'novo'}
 
-          aoClicarEmVoltar={() => navigate('/pacientes')}
-          aoClicarEmApagar={() => handleDelete(Number(paciente_id))}
-          aoClicarEmNovo={() => navigate('/pacientes/detalhe/novo')}
+          aoClicarEmVoltar={() => navigate('/paciente')}
+          aoClicarEmApagar={() => handleDelete(Number(id))}
+          aoClicarEmNovo={() => navigate('/paciente/detalhe/novo')}
           aoClicarEmSalvarEFechar={() => formRef.current?.submitForm()}
           aoClicarEmSalvar={() => formRef.current?.submitForm()}
         />
       }
     >
       <Form ref={formRef} onSubmit={handleSave}>
-        <VTextField name='paciente_nome' label='Nome' />
-        <VTextField name='paciente_cpf' label='CPF' />
-        <VTextField name='paciente_nascimento' label='Data de Nascimento' />
-        <VTextField name='paciente_telefone' label='Telefone' />
-        <VTextField name='paciente_residencia' label='Residência' />
-        <VTextField name='paciente_comorbidade' label='Comorbidades' />
+        <VTextField name='pacienteNome' label='Nome' />
+        <VTextField name='pacienteCPF' label='CPF' />
+        <VTextField name='pacienteNascimento' label='Data de Nascimento' />
+        <VTextField name='pacienteTelefone' label='Telefone' />
+        <VTextField name='pacienteResidencia' label='Residência' />
+        <VTextField name='pacienteComorbidade' label='Comorbidades' />
       </Form>
 
     </LayoutBaseDePagina >

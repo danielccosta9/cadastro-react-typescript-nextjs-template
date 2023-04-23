@@ -27,13 +27,13 @@ export const AppRoutes = () => {
       },
       {
         icon: 'accessible',
-        path: '/pacientes',
-        label: 'Pacientes',
+        path: '/paciente',
+        label: 'Paciente',
       },
       {
         icon: 'local_hospital',
-        path: '/hospitais',
-        label: 'Hospitais',
+        path: '/hospital',
+        label: 'Hospital',
       },
     ]);
   }, [ setDrawerOptions]);
@@ -42,9 +42,9 @@ export const AppRoutes = () => {
     <Routes>
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/agenda" element={<ListagemDaAgenda />} />
-      <Route path="/pacientes" element={<ListagemDePacientes />} />
-      <Route path="/pacientes/detalhe/:paciente_id" element={<DetalheDepacientes />} />
-      <Route path="/hospitais" element={<ListagemDeHospitais />} />
+      <Route path="/paciente" element={<ListagemDePacientes />} />
+      <Route path="/paciente/detalhe/:id" element={<DetalheDepacientes />} />
+      <Route path="/hospital" element={<ListagemDeHospitais />} />
 
       <Route path="*" element={<Navigate to="/dashboard" />} />
     </Routes>

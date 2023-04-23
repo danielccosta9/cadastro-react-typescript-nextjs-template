@@ -62,15 +62,15 @@ export const ListagemDaAgenda: React.FC = () => {
         });
     }, [busca, debounce, pagina]);
 
-    const handleDelete = (agenda_id: number, paciente_nome: string) => {
-        if (confirm(`${paciente_nome} Viajou?`)) {
-            AgendaService.deleteById(agenda_id)
+    const handleDelete = (id: number, pacienteNome: string) => {
+        if (confirm(`${pacienteNome} Viajou?`)) {
+            AgendaService.deleteById(id)
                 .then(result => {
                     if (result instanceof Error) {
                         alert(result.message);
                     } else {
                         setRows(oldRows => [
-                            ...oldRows.filter(oldRow => oldRow.agenda_id !== agenda_id),
+                            ...oldRows.filter(oldRow => oldRow.id !== id),
                         ]);
                         alert('Registro apagado com sucesso!');
                     }
@@ -90,14 +90,10 @@ export const ListagemDaAgenda: React.FC = () => {
     };
 
     const filteredAgenda = useMemo(() => {
-        return rows.filter(agenda => {
-            return (
-                agenda.paciente_nome.toLowerCase().includes(busca.toLowerCase()) ||
-                agenda.agenda_data.toLowerCase().includes(busca.toLowerCase())
-                
-            )
+        return rows.filter(row => {
+            return row.pacienteNome
         });
-    }, [busca, rows]);
+    }, [rows]);
 
     const quantidadeDePaginas = filteredAgenda.length
 
@@ -121,7 +117,7 @@ export const ListagemDaAgenda: React.FC = () => {
                             <TableCell align="left">Data</TableCell>
                             <TableCell align="left">Nome do Paciente</TableCell>
                             <TableCell align="left">CPF</TableCell>
-                            <TableCell align="left">Contato</TableCell>
+                            <TableCell align="left">Telefone</TableCell>
                             <TableCell align="left">Saída</TableCell>
                             <TableCell align="left">Marcado</TableCell>
                             <TableCell width={300} align="left">Nome do Hospital</TableCell>
@@ -137,23 +133,24 @@ export const ListagemDaAgenda: React.FC = () => {
                                     key={index}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                     hover>
-                                    <TableCell align="left">{
+                                    {/* <TableCell align="left">{
                                         new Intl.DateTimeFormat('pt-BR', {
                                             day: '2-digit',
                                             month: '2-digit',
                                             year: '2-digit',
-                                        }).format(new Date(agenda.agenda_data).getTime() + 1000 * 60 * 60 * 24)
-                                    }</TableCell>
-                                    <TableCell align="left">{agenda.paciente_nome}</TableCell>
-                                    <TableCell align="left">{agenda.paciente_cpf}</TableCell>
-                                    <TableCell align="left">{agenda.paciente_telefone}</TableCell>
-                                    <TableCell align="left">{agenda.agenda_saida}</TableCell>
-                                    <TableCell align="left">{agenda.agenda_marcado}</TableCell>
-                                    <TableCell align="left">{agenda.hospital_nome}</TableCell>
-                                    <TableCell align="left">{agenda.agenda_carro}</TableCell>
+                                        }).format(new Date(agenda.agendaData).getTime() + 1000 * 60 * 60 * 24)
+                                    }</TableCell> */}
+                                    <TableCell align="left">{agenda.agendaData}</TableCell>
+                                    <TableCell align="left">{agenda.pacienteNome}</TableCell>
+                                    <TableCell align="left">{agenda.pacienteCPF}</TableCell>
+                                    <TableCell align="left">{agenda.pacienteTelefone}</TableCell>
+                                    <TableCell align="left">{agenda.agendaHoraSaida}</TableCell>
+                                    <TableCell align="left">{agenda.agendaMarcado}</TableCell>
+                                    <TableCell align="left">{agenda.hospitalNome}</TableCell>
+                                    <TableCell align="left">{agenda.agendaCarro}</TableCell>
                                     <TableCell align="right">
                                         <IconButton
-                                            onClick={handleDelete.bind(this, agenda.agenda_id, agenda.paciente_nome)}
+                                            onClick={handleDelete.bind(this, agenda.id, agenda.pacienteNome)}
                                         >
                                             <Icon color="success">done</Icon>
                                         </IconButton>

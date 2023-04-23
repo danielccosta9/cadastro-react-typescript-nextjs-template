@@ -61,15 +61,15 @@ export const ListagemDePacientes: React.FC = () => {
         });
     }, [busca, debounce, pagina]);
 
-    const handleDelete = (paciente_id: number) => {
+    const handleDelete = (id: number) => {
         if (confirm('Realmente deseja apagar?')) {
-            PacienteService.deleteById(paciente_id)
+            PacienteService.deleteById(id)
                 .then(result => {
                     if (result instanceof Error) {
                         alert(result.message);
                     } else {
                         setRows(oldRows => [
-                            ...oldRows.filter(oldRow => oldRow.paciente_id !== paciente_id),
+                            ...oldRows.filter(oldRow => oldRow.id !== id),
                         ]);
                         alert('Registro apagado com sucesso!');
                     }
@@ -90,7 +90,7 @@ export const ListagemDePacientes: React.FC = () => {
 
     const filteredPacientes = useMemo(() => {
         return rows.filter(paciente => {
-            return paciente.paciente_nome.toLowerCase().includes(busca.toLowerCase());
+            return paciente.pacienteNome.toLowerCase().includes(busca.toLowerCase());
         });
     }, [busca, rows]);
 
@@ -98,13 +98,13 @@ export const ListagemDePacientes: React.FC = () => {
 
     return (
         <LayoutBaseDePagina
-            titulo='Listagem de Pacientes'
+            titulo='Listagem de Paciente'
             barraDeFerramentas={
                 <FerramentasDaListagem
                     mostrarInputBusca
                     textoDaBusca={busca}
                     textoBotaoNovo='Novo'
-                    aoClicarEmNovo={() => navigate('/pacientes/detalhe/novo')}
+                    aoClicarEmNovo={() => navigate('/paciente/detalhe/novo')}
                     aoMudarTextoDeBusca={texto => setSearchParams({ busca: texto, pagina: '1' }, { replace: true })}
                 />
             }
@@ -129,19 +129,19 @@ export const ListagemDePacientes: React.FC = () => {
                                     key={index}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                     hover>
-                                    <TableCell align="left">{paciente.paciente_nome}</TableCell>
-                                    <TableCell align="left">{paciente.paciente_cpf}</TableCell>
-                                    <TableCell align="left">{paciente.paciente_nascimento}</TableCell>
-                                    <TableCell align="left">{paciente.paciente_telefone}</TableCell>
-                                    <TableCell align="left">{paciente.paciente_residencia}</TableCell>
+                                    <TableCell align="left">{paciente.pacienteNome}</TableCell>
+                                    <TableCell align="left">{paciente.pacienteCPF}</TableCell>
+                                    <TableCell align="left">{paciente.pacienteNascimento}</TableCell>
+                                    <TableCell align="left">{paciente.pacienteTelefone}</TableCell>
+                                    <TableCell align="left">{paciente.pacienteResidencia}</TableCell>
                                     <TableCell align="right">
                                         <IconButton
-                                            onClick={handleDelete.bind(this, paciente.paciente_id)}
+                                            onClick={handleDelete.bind(this, paciente.id)}
                                         >
                                             <Icon color="error">delete</Icon>
                                         </IconButton>
                                         <IconButton
-                                            onClick={() => navigate(`/pacientes/detalhe/${paciente.paciente_id}`)}
+                                            onClick={() => navigate(`/paciente/detalhe/${paciente.id}`)}
                                         >
                                             <Icon color="secondary">edit</Icon>
                                         </IconButton>

@@ -2,29 +2,29 @@ import { Environment } from "@/app/shared/environment";
 import { Api } from "../axios-config";
 
 export interface IListagemAgenda {
-    agenda_id: number;
-    paciente_nome: string;
-    paciente_cpf: string;
-    paciente_telefone: string;
-    agenda_saida: string;
-    agenda_marcado: string;
-    hospital_nome: string;
-    agenda_status: string;
-    agenda_carro: string;
-    agenda_data: string;
+    id: number;
+    pacienteNome: string;
+    pacienteCPF: string;
+    pacienteTelefone: string;
+    agendaHoraSaida: string;
+    agendaMarcado: string;
+    hospitalNome: string;
+    agendaStatus: string;
+    agendaCarro: string;
+    agendaData: string;
 }
 
 export interface IDetalhesAgenda {
-    agenda_id: number;
-    paciente_nome: string;
-    paciente_cpf: string;
-    paciente_telefone: string;
-    agenda_saida: string;
-    agenda_marcado: string;
-    hospital_nome: string;
-    agenda_status: string;
-    agenda_carro: string;
-    agenda_data: string;
+    id: number;
+    pacienteNome: string;
+    pacienteCPF: string;
+    pacienteTelefone: string;
+    agendaHoraSaida: string;
+    agendaMarcado: string;
+    hospitalNome: string;
+    agendaStatus: string;
+    agendaCarro: string;
+    agendaData: string;
 }
 
 type TAgendaComTotalCount = {
@@ -33,7 +33,7 @@ type TAgendaComTotalCount = {
 }
 
 const getAll = async (page = 1, filter = ''): Promise<TAgendaComTotalCount | Error> => {
-    const urlRelativa = `agenda?_page=${page}&_limit=${Environment.LIMITE_DE_LINHAS}&paciente_nome_like=${filter}`
+    const urlRelativa = `agenda?_page=${page}&_limit=${Environment.LIMITE_DE_LINHAS}&pacienteNome_like=${filter}`
     try {
         const { data, headers } = await Api.get(urlRelativa);
         if (data) {
@@ -50,9 +50,9 @@ const getAll = async (page = 1, filter = ''): Promise<TAgendaComTotalCount | Err
     }
 }
 
-const getById = async (agenda_id: number): Promise<IDetalhesAgenda | Error> => {
+const getById = async (id: number): Promise<IDetalhesAgenda | Error> => {
     try {
-      const { data } = await Api.get(`agenda/${agenda_id}`);
+      const { data } = await Api.get(`agenda/${id}`);
   
       if (data) {
         return data;
@@ -65,12 +65,12 @@ const getById = async (agenda_id: number): Promise<IDetalhesAgenda | Error> => {
     }
   };
   
-  const create = async (dados: Omit<IDetalhesAgenda, 'agenda_id'>): Promise<number | Error> => {
+  const create = async (dados: Omit<IDetalhesAgenda, 'id'>): Promise<number | Error> => {
     try {
       const { data } = await Api.post<IDetalhesAgenda>('agenda', dados);
   
       if (data) {
-        return data.agenda_id;
+        return data.id;
       }
   
       return new Error('Erro ao criar o registro.');
@@ -80,18 +80,18 @@ const getById = async (agenda_id: number): Promise<IDetalhesAgenda | Error> => {
     }
   };
   
-  const updateById = async (agenda_id: number, dados: IDetalhesAgenda): Promise<void | Error> => {
+  const updateById = async (id: number, dados: IDetalhesAgenda): Promise<void | Error> => {
     try {
-      await Api.put(`agenda/${agenda_id}`, dados);
+      await Api.put(`agenda/${id}`, dados);
     } catch (error) {
       console.error(error);
       return new Error((error as { message: string }).message || 'Erro ao atualizar o registro.');
     }
   };
   
-  const deleteById = async (agenda_id: number): Promise<void | Error> => {
+  const deleteById = async (id: number): Promise<void | Error> => {
     try {
-      await Api.delete(`agenda/${agenda_id}`);
+      await Api.delete(`agenda/${id}`);
     } catch (error) {
       console.error(error);
       return new Error((error as { message: string }).message || 'Erro ao apagar o registro.');

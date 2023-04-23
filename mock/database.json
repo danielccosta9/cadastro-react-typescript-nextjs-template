@@ -1,0 +1,83 @@
+{
+  "paciente": [
+    {
+      "id": 1,
+      "pacienteNome": "FULANO DE TAL",
+      "pacienteCPF": "123.456.789-10",
+      "pacienteNascimento": "01/01/1990",
+      "pacienteTelefone": "(83) 99999-9999",
+      "pacienteResidencia": "CENTRO",
+      "pacienteComorbidade": "SEM COMORBIDADE"
+    },
+    {
+      "id": 2,
+      "pacienteNome": "BELTRANO DE TAL",
+      "pacienteCPF": "123.456.789-10",
+      "pacienteNascimento": "01/01/1990",
+      "pacienteTelefone": "(83) 99999-9999",
+      "pacienteResidencia": "CENTRO",
+      "pacienteComorbidade": "SEM COMORBIDADE"
+    },
+    {
+      "id": 3,
+      "pacienteNome": "CICLANO DE TAL",
+      "pacienteCPF": "123.456.789-10",
+      "pacienteNascimento": "01/01/1990",
+      "pacienteTelefone": "(83) 99999-9999",
+      "pacienteResidencia": "CENTRO",
+      "pacienteComorbidade": "SEM COMORBIDADE"
+    },
+    {
+      "pacienteNome": "FULANO DE TAL 2",
+      "pacienteCPF": "123.456.789-10",
+      "pacienteNascimento": "23/04/2023",
+      "pacienteTelefone": "(83) 00000-0000",
+      "pacienteResidencia": "CENTRO",
+      "pacienteComorbidade": "SEM COMORBIDADE",
+      "id": 4
+    }
+  ],
+  "hospital": [
+    {
+      "id": 1,
+      "hospitalNome": "HOSPITAL DE CAMPO 1",
+      "hospitalEstado": "JOÃO PESSOA - PB"
+    },
+    {
+      "id": 2,
+      "hospitalNome": "HOSPITAL DE CAMPO 2",
+      "hospitalEstado": "JOÃO PESSOA - PB"
+    },
+    {
+      "id": 3,
+      "hospitalNome": "HOSPITAL DE CAMPO 3",
+      "hospitalEstado": "JOÃO PESSOA - PB"
+    }
+  ],
+  "agenda": [
+    {
+      "id": 1,
+      "pacienteNome": "FULANO DE TAL",
+      "pacienteCPF": "123.456.789-10",
+      "pacienteTelefone": "(83) 99999-9999",
+      "hospitalNome": "HOSPITAL DE CAMPO 2",
+      "agendaData": "23/04/2023",
+      "agendaHoraSaida": "05:00",
+      "agendaMarcado": "08:00",
+      "agendaCarro": "SIM",
+      "agendaStatus": "AGUARDANDO"
+    },
+    {
+      "id": 2,
+      "pacienteNome": "CICLANO DE TAL",
+      "pacienteCPF": "123.456.789-10",
+      "pacienteTelefone": "(83) 99999-9999",
+      "hospitalNome": "HOSPITAL DE CAMPO 1",
+      "agendaData": "22/04/2023",
+      "agendaHoraSaida": "05:00",
+      "agendaMarcado": "08:00",
+      "agendaCarro": "SIM",
+      "agendaStatus": "AGUARDANDO"
+    }
+  ]
+}

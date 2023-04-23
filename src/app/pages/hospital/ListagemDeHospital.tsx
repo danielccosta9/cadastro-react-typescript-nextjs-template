@@ -61,15 +61,15 @@ export const ListagemDeHospitais: React.FC = () => {
         });
     }, [busca, debounce, pagina]);
 
-    const handleDelete = (hospital_id: number) => {
+    const handleDelete = (id: number) => {
         if (confirm('Realmente deseja apagar?')) {
-            HospitalService.deleteById(hospital_id)
+            HospitalService.deleteById(id)
                 .then(result => {
                     if (result instanceof Error) {
                         alert(result.message);
                     } else {
                         setRows(oldRows => [
-                            ...oldRows.filter(oldRow => oldRow.hospital_id !== hospital_id),
+                            ...oldRows.filter(oldRow => oldRow.id !== id),
                         ]);
                         alert('Registro apagado com sucesso!');
                     }
@@ -90,7 +90,7 @@ export const ListagemDeHospitais: React.FC = () => {
 
     const filteredHospital = useMemo(() => {
         return rows.filter(hospital => {
-            return hospital.hospital_nome.toLowerCase().includes(busca.toLowerCase());
+            return hospital.hospitalNome.toLowerCase().includes(busca.toLowerCase());
         });
     }, [busca, rows]);
 
@@ -98,7 +98,7 @@ export const ListagemDeHospitais: React.FC = () => {
 
     return (
         <LayoutBaseDePagina
-            titulo='Listagem dos Hospitais'
+            titulo='Listagem dos Hospital'
             barraDeFerramentas={
                 <FerramentasDaListagem
                     mostrarInputBusca
@@ -126,16 +126,16 @@ export const ListagemDeHospitais: React.FC = () => {
                                     key={index}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                     hover>
-                                    <TableCell align="left">{hospital.hospital_nome}</TableCell>
-                                    <TableCell align="left">{hospital.hospital_estado}</TableCell>
+                                    <TableCell align="left">{hospital.hospitalNome}</TableCell>
+                                    <TableCell align="left">{hospital.hospitalEstado}</TableCell>
                                     <TableCell align="right">
                                         <IconButton
-                                            onClick={handleDelete.bind(this, hospital.hospital_id)}
+                                            onClick={handleDelete.bind(this, hospital.id)}
                                         >
                                             <Icon color="error">delete</Icon>
                                         </IconButton>
                                         <IconButton
-                                            onClick={() => navigate(`/pessoas/detalhe/${hospital.hospital_id}`)}
+                                            onClick={() => navigate(`/pessoas/detalhe/${hospital.id}`)}
                                         >
                                             <Icon color="secondary">edit</Icon>
                                         </IconButton>
