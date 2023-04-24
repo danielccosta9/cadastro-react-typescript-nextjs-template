@@ -103,8 +103,8 @@ export const ListagemDeHospitais: React.FC = () => {
                 <FerramentasDaListagem
                     mostrarInputBusca
                     textoDaBusca={busca}
-                    textoBotaoNovo='Novo hospital'
-                    aoClicarEmNovo={() => navigate('/pessoas/detalhe/nova')}
+                    textoBotaoNovo='Novo'
+                    aoClicarEmNovo={() => navigate('/hospital/detalhe/novo')}
                     aoMudarTextoDeBusca={texto => setSearchParams({ busca: texto, pagina: '1' }, { replace: true })}
                 />
             }
@@ -135,7 +135,7 @@ export const ListagemDeHospitais: React.FC = () => {
                                             <Icon color="error">delete</Icon>
                                         </IconButton>
                                         <IconButton
-                                            onClick={() => navigate(`/pessoas/detalhe/${hospital.id}`)}
+                                            onClick={() => navigate(`/hospital/detalhe/${hospital.id}`)}
                                         >
                                             <Icon color="secondary">edit</Icon>
                                         </IconButton>

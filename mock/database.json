@@ -52,6 +52,16 @@
       "id": 3,
       "hospitalNome": "HOSPITAL DE CAMPO 3",
       "hospitalEstado": "JOÃO PESSOA - PB"
+    },
+    {
+      "hospitalNome": "HOSPITAL DAS CLINICAS",
+      "hospitalEstado": "JOÃO PESSOA - PB",
+      "id": 4
+    },
+    {
+      "hospitalNome": "HOSPITAL DO POVO",
+      "hospitalEstado": "JOÃO PESSOA - PB",
+      "id": 5
     }
   ],
   "agenda": [

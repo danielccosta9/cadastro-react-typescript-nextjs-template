@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import * as yup from 'yup';
 
-import { PacienteService } from "@/app/shared/services/api/paciente/PacienteService";
+import { HospitalService } from "@/app/shared/services/api/hospital/HospitalService";
 import { FerramentasDeDetalhe } from '@/app/shared/components';
 import { LayoutBaseDePagina } from '@/app/shared/layouts';
 import { IVFormErrors, VForm, VTextField, useVForm } from '@/app/shared/forms';
@@ -11,24 +11,15 @@ import { Box, Grid, LinearProgress, Paper } from '@mui/material';
 
 
 interface IFormData {
-  pacienteNome: string;
-  pacienteCPF: string;
-  pacienteNascimento: string;
-  pacienteTelefone: string;
-  pacienteResidencia: string;
-  pacienteComorbidade: string;
+  hospitalNome: string;
+  hospitalEstado: string;
 }
 const formValidationSchema: yup.Schema<IFormData> = yup.object().shape({
-  pacienteNome: yup.string().required('O nome é obrigatório').min(3, 'O nome deve ter no mínimo 3 caracteres'),
-  pacienteCPF: yup.string().required('O CPF é obrigatório').min(14, 'O CPF deve ter no mínimo 11 caracteres'),
-  pacienteNascimento: yup.string().required('A data de nascimento é obrigatória'),
-  pacienteTelefone: yup.string().required('O telefone é obrigatório').min(14, 'O telefone deve ter no mínimo 11 caracteres'),
-  pacienteResidencia: yup.string().required('A residência é obrigatória').min(3, 'A residência deve ter no mínimo 3 caracteres'),
-  pacienteComorbidade: yup.string().required('A comorbidade é obrigatória').min(3, 'A comorbidade deve ter no mínimo 3 caracteres'),
-
+  hospitalNome: yup.string().required('Nome é obrigatório').min(3, 'Nome deve ter no mínimo 3 caracteres'),
+  hospitalEstado: yup.string().required('Estado é obrigatório').min(2, 'Estado deve ter no mínimo 2 caracteres'),
 });
 
-export const DetalheDePacientes: React.FC = () => {
+export const DetalheDeHospital: React.FC = () => {
   const { id = 'novo' } = useParams<'id'>();
   const { formRef, save, saveAndClose, isSaveAndClose } = useVForm();
   const navigate = useNavigate();
@@ -40,14 +31,14 @@ export const DetalheDePacientes: React.FC = () => {
   useEffect(() => {
     if (id !== 'novo') {
       setIsLoading(true);
-      PacienteService.getById(Number(id))
+      HospitalService.getById(Number(id))
         .then((result) => {
           setIsLoading(false);
           if (result instanceof Error) {
             alert(result.message);
-            navigate('/paciente');
+            navigate('/hospital');
           } else {
-            setNome(result.pacienteNome);
+            setNome(result.hospitalNome);
             console.log(result);
             formRef.current?.setData(result);
           }
@@ -63,7 +54,7 @@ export const DetalheDePacientes: React.FC = () => {
         setIsLoading(true);
 
         if (id === 'novo') {
-          PacienteService
+          HospitalService
             .create(dadosValidados)
             .then((result) => {
               setIsLoading(false);
@@ -72,14 +63,14 @@ export const DetalheDePacientes: React.FC = () => {
                 alert(result.message);
               } else {
                 if (isSaveAndClose()) {
-                  navigate('/paciente');
+                  navigate('/hospital');
                 } else {
-                  navigate(`/paciente/detalhe/${result}`);
+                  navigate(`/hospital/detalhe/${result}`);
                 }
               }
             });
         } else {
-          PacienteService
+          HospitalService
             .updateById(Number(id), { id: Number(id), ...dadosValidados })
             .then((result) => {
               setIsLoading(false);
@@ -88,7 +79,7 @@ export const DetalheDePacientes: React.FC = () => {
                 alert(result.message);
               } else {
                 if (isSaveAndClose()) {
-                  navigate('/paciente');
+                  navigate('/hospital');
                 }
               }
             });
@@ -111,13 +102,13 @@ export const DetalheDePacientes: React.FC = () => {
 
   const handleDelete = (id: number) => {
     if (confirm('Realmente deseja apagar?')) {
-      PacienteService.deleteById(id)
+      HospitalService.deleteById(id)
         .then(result => {
           if (result instanceof Error) {
             alert(result.message);
           } else {
             alert('Registro apagado com sucesso!');
-            navigate('/paciente');
+            navigate('/hospital');
           }
         });
     }
@@ -126,16 +117,16 @@ export const DetalheDePacientes: React.FC = () => {
 
   return (
     <LayoutBaseDePagina
-      titulo={id === 'novo' ? 'Novo Paciente' : nome}
+      titulo={id === 'novo' ? 'Novo Hospital' : nome}
       barraDeFerramentas={
         <FerramentasDeDetalhe
           textoBotaoNovo='Novo'
           mostrarBotaoNovo={id !== 'novo'}
           mostrarBotaoApagar={id !== 'novo'}
 
-          aoClicarEmVoltar={() => navigate('/paciente')}
+          aoClicarEmVoltar={() => navigate('/hospital')}
           aoClicarEmApagar={() => handleDelete(Number(id))}
-          aoClicarEmNovo={() => navigate('/paciente/detalhe/novo')}
+          aoClicarEmNovo={() => navigate('/hospital/detalhe/novo')}
           aoClicarEmSalvar={() => formRef.current?.submitForm()}
         />
       }
@@ -152,53 +143,17 @@ export const DetalheDePacientes: React.FC = () => {
           <Grid container direction="row" padding={2} spacing={2}>
             <Grid item xs={12} sm={6}>
               <VTextField
-                name='pacienteNome'
+                name='hospitalNome'
                 label='Nome'
                 variant='outlined'
                 fullWidth
               />
             </Grid>
 
-            <Grid item xs={12} sm={3}>
+            <Grid item xs={12} sm={6}>
               <VTextField
-                name='pacienteNascimento'
-                label='Data de Nascimento'
-                variant='outlined'
-                fullWidth
-              />
-            </Grid>
-            <Grid item xs={12} sm={3}>
-              <VTextField
-                name='pacienteCPF'
-                label='CPF'
-                variant='outlined'
-                fullWidth
-              />
-            </Grid>
-
-          </Grid>
-          <Grid container direction="row" padding={2} spacing={2}>
-
-            <Grid item xs={12} sm={3}>
-              <VTextField
-                name='pacienteTelefone'
-                label='Telefone'
-                variant='outlined'
-                fullWidth
-              />
-            </Grid>
-            <Grid item xs={12} sm={5}>
-              <VTextField
-                name='pacienteResidencia'
-                label='Residência'
-                variant='outlined'
-                fullWidth
-              />
-            </Grid>
-            <Grid item xs={12} sm={4}>
-              <VTextField
-                name='pacienteComorbidade'
-                label='Comorbidade'
+                name='hospitalEstado'
+                label='Estado'
                 variant='outlined'
                 fullWidth
               />
