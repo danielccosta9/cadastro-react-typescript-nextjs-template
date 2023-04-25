@@ -7,7 +7,7 @@ import { FerramentasDeDetalhe } from '@/app/shared/components';
 import { LayoutBaseDePagina } from '@/app/shared/layouts';
 import { IVFormErrors, VForm, VTextField, useVForm } from '@/app/shared/forms';
 import { Form } from '@unform/web';
-import { Box, Grid, LinearProgress, Paper } from '@mui/material';
+import { Box, Grid, LinearProgress, Paper, Typography } from '@mui/material';
 
 
 interface IFormData {
@@ -43,6 +43,11 @@ export const DetalheDeHospital: React.FC = () => {
             formRef.current?.setData(result);
           }
         });
+    } else {
+      formRef.current?.setData({
+        hospitalNome: '',
+        hospitalEstado: '',
+      });
     }
   }, [formRef, navigate, id]);
 
@@ -140,6 +145,10 @@ export const DetalheDeHospital: React.FC = () => {
             </Grid>
           )}
 
+          <Grid item>
+            <Typography variant="h6" component="div" sx={{ p: 2 }}> Cadastrar Hospital </Typography>
+          </Grid>
+          
           <Grid container direction="row" padding={2} spacing={2}>
             <Grid item xs={12} sm={6}>
               <VTextField
@@ -147,6 +156,8 @@ export const DetalheDeHospital: React.FC = () => {
                 label='Nome'
                 variant='outlined'
                 fullWidth
+                disabled={isLoading}
+                onChange={(e) => { setNome(e.target.value); }}
               />
             </Grid>
 
@@ -156,6 +167,7 @@ export const DetalheDeHospital: React.FC = () => {
                 label='Estado'
                 variant='outlined'
                 fullWidth
+                disabled={isLoading}
               />
             </Grid>
           </Grid>
