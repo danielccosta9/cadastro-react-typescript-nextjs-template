@@ -5,8 +5,9 @@ import * as yup from 'yup';
 import { AgendaService } from "@/app/shared/services/api/agenda/AgendaService";
 import { FerramentasDeDetalhe } from '@/app/shared/components';
 import { LayoutBaseDePagina } from '@/app/shared/layouts';
-import { IVFormErrors, VForm, VTextField, useVForm } from '@/app/shared/forms';
+import { IVFormErrors, VTextField, useVForm } from '@/app/shared/forms';
 import { Box, Grid, LinearProgress, Paper, Typography } from '@mui/material';
+import { Form } from '@unform/web';
 
 
 interface IFormData {
@@ -49,15 +50,18 @@ export const DetalheDeAgenda: React.FC = () => {
           setIsLoading(false);
           if (result instanceof Error) {
             alert(result.message);
-            navigate('/agenda');
           } else {
-            setNome(result.hospitalNome);
-            console.log(result);
-            formRef.current?.setData(result);
+            if (isSaveAndClose()) {
+              navigate('/agenda');
+            } else {
+              setNome(result.pacienteNome);
+              formRef.current?.setData(result);
+              navigate(`/agenda/detalhe/${result}`);
+            }
           }
         });
     }
-  }, [formRef, navigate, id]);
+  }, [formRef, navigate, id, isSaveAndClose]);
 
   const handleSave = (dados: IFormData) => {
 
@@ -137,14 +141,15 @@ export const DetalheDeAgenda: React.FC = () => {
           mostrarBotaoNovo={id !== 'novo'}
           mostrarBotaoApagar={id !== 'novo'}
 
+          aoClicarEmSalvar={save}
+          aoClicarEmSalvarEFechar={saveAndClose}
           aoClicarEmVoltar={() => navigate('/agenda')}
           aoClicarEmApagar={() => handleDelete(Number(id))}
           aoClicarEmNovo={() => navigate('/agenda/detalhe/novo')}
-          aoClicarEmSalvar={() => formRef.current?.submitForm()}
         />
       }
     >
-      <VForm ref={formRef} onSubmit={handleSave}>
+      <Form ref={formRef} onSubmit={handleSave}>
         <Box margin={1} display="flex" flexDirection="column" component={Paper} variant="outlined">
 
           {isLoading && (
@@ -177,7 +182,7 @@ export const DetalheDeAgenda: React.FC = () => {
             </Grid>
           </Grid>
         </Box>
-      </VForm>
+      </Form>
     </LayoutBaseDePagina >
   );
 };

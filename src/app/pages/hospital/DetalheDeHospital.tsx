@@ -5,8 +5,9 @@ import * as yup from 'yup';
 import { HospitalService } from "@/app/shared/services/api/hospital/HospitalService";
 import { FerramentasDeDetalhe } from '@/app/shared/components';
 import { LayoutBaseDePagina } from '@/app/shared/layouts';
-import { IVFormErrors, VForm, VTextField, useVForm } from '@/app/shared/forms';
+import { IVFormErrors, VTextField, useVForm } from '@/app/shared/forms';
 import { Box, Grid, LinearProgress, Paper, Typography } from '@mui/material';
+import { Form } from '@unform/web';
 
 
 interface IFormData {
@@ -35,11 +36,14 @@ export const DetalheDeHospital: React.FC = () => {
           setIsLoading(false);
           if (result instanceof Error) {
             alert(result.message);
-            navigate('/hospital');
           } else {
-            setNome(result.hospitalNome);
-            console.log(result);
-            formRef.current?.setData(result);
+            if (isSaveAndClose()) {
+              navigate('/hospital');
+            } else {
+              setNome(result.hospitalNome);
+              formRef.current?.setData(result);
+              navigate(`/hospital/detalhe/${result}`);
+            }
           }
         });
     } else {
@@ -48,7 +52,7 @@ export const DetalheDeHospital: React.FC = () => {
         hospitalEstado: '',
       });
     }
-  }, [formRef, navigate, id]);
+  }, [formRef, navigate, id, isSaveAndClose]);
 
   const handleSave = (dados: IFormData) => {
 
@@ -128,14 +132,15 @@ export const DetalheDeHospital: React.FC = () => {
           mostrarBotaoNovo={id !== 'novo'}
           mostrarBotaoApagar={id !== 'novo'}
 
+          aoClicarEmSalvar={save}
+          aoClicarEmSalvarEFechar={saveAndClose}
           aoClicarEmVoltar={() => navigate('/hospital')}
           aoClicarEmApagar={() => handleDelete(Number(id))}
           aoClicarEmNovo={() => navigate('/hospital/detalhe/novo')}
-          aoClicarEmSalvar={() => formRef.current?.submitForm()}
         />
       }
     >
-      <VForm ref={formRef} onSubmit={handleSave}>
+      <Form ref={formRef} onSubmit={handleSave}>
         <Box margin={1} display="flex" flexDirection="column" component={Paper} variant="outlined">
 
           {isLoading && (
@@ -147,7 +152,7 @@ export const DetalheDeHospital: React.FC = () => {
           <Grid item>
             <Typography variant="h6" component="div" sx={{ p: 2 }}> Cadastrar Hospital </Typography>
           </Grid>
-          
+
           <Grid container direction="row" padding={2} spacing={2}>
             <Grid item xs={12} sm={6}>
               <VTextField
@@ -171,7 +176,7 @@ export const DetalheDeHospital: React.FC = () => {
             </Grid>
           </Grid>
         </Box>
-      </VForm>
+      </Form>
 
     </LayoutBaseDePagina >
   );

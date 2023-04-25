@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { Box, Grid, LinearProgress, Paper, Typography } from '@mui/material';
+import { Form } from '@unform/web';
 import * as yup from 'yup';
 
 import { PacienteService } from "@/app/shared/services/api/paciente/PacienteService";
 import { FerramentasDeDetalhe } from '@/app/shared/components';
 import { LayoutBaseDePagina } from '@/app/shared/layouts';
-import { IVFormErrors, VForm, VTextField, useVForm } from '@/app/shared/forms';
-import { Box, Grid, LinearProgress, Paper, Typography } from '@mui/material';
+import { IVFormErrors, VTextField, useVForm } from '@/app/shared/forms';
 
 
 interface IFormData {
@@ -44,11 +45,14 @@ export const DetalheDePacientes: React.FC = () => {
           setIsLoading(false);
           if (result instanceof Error) {
             alert(result.message);
-            navigate('/paciente');
           } else {
-            setNome(result.pacienteNome);
-            console.log(result);
-            formRef.current?.setData(result);
+            if (isSaveAndClose()) {
+              navigate('/paciente');
+            } else {
+              setNome(result.pacienteNome);
+              formRef.current?.setData(result);
+              navigate(`/paciente/detalhe/${result}`);
+            }
           }
         });
     } else {
@@ -61,7 +65,7 @@ export const DetalheDePacientes: React.FC = () => {
         pacienteComorbidade: '',
       });
     }
-  }, [formRef, navigate, id]);
+  }, [formRef, navigate, id, isSaveAndClose]);
 
   const handleSave = (dados: IFormData) => {
 
@@ -141,14 +145,15 @@ export const DetalheDePacientes: React.FC = () => {
           mostrarBotaoNovo={id !== 'novo'}
           mostrarBotaoApagar={id !== 'novo'}
 
+          aoClicarEmSalvar={save}
+          aoClicarEmSalvarEFechar={saveAndClose}
           aoClicarEmVoltar={() => navigate('/paciente')}
           aoClicarEmApagar={() => handleDelete(Number(id))}
           aoClicarEmNovo={() => navigate('/paciente/detalhe/novo')}
-          aoClicarEmSalvar={() => formRef.current?.submitForm()}
         />
       }
     >
-      <VForm ref={formRef} onSubmit={handleSave}>
+      <Form ref={formRef} onSubmit={handleSave}>
         <Box margin={1} display="flex" flexDirection="column" component={Paper} variant="outlined">
 
           {isLoading && (
@@ -224,7 +229,7 @@ export const DetalheDePacientes: React.FC = () => {
             </Grid>
           </Grid>
         </Box>
-      </VForm>
+      </Form>
     </LayoutBaseDePagina >
   );
 };
