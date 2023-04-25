@@ -6,7 +6,6 @@ import { AgendaService } from "@/app/shared/services/api/agenda/AgendaService";
 import { FerramentasDeDetalhe } from '@/app/shared/components';
 import { LayoutBaseDePagina } from '@/app/shared/layouts';
 import { IVFormErrors, VForm, VTextField, useVForm } from '@/app/shared/forms';
-import { Form } from '@unform/web';
 import { Box, Grid, LinearProgress, Paper, Typography } from '@mui/material';
 
 
@@ -145,7 +144,7 @@ export const DetalheDeAgenda: React.FC = () => {
         />
       }
     >
-      <Form ref={formRef} onSubmit={handleSave}>
+      <VForm ref={formRef} onSubmit={handleSave}>
         <Box margin={1} display="flex" flexDirection="column" component={Paper} variant="outlined">
 
           {isLoading && (
@@ -178,7 +177,7 @@ export const DetalheDeAgenda: React.FC = () => {
             </Grid>
           </Grid>
         </Box>
-      </Form>
+      </VForm>
     </LayoutBaseDePagina >
   );
 };

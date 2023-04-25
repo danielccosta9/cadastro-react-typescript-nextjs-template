@@ -6,7 +6,6 @@ import { HospitalService } from "@/app/shared/services/api/hospital/HospitalServ
 import { FerramentasDeDetalhe } from '@/app/shared/components';
 import { LayoutBaseDePagina } from '@/app/shared/layouts';
 import { IVFormErrors, VForm, VTextField, useVForm } from '@/app/shared/forms';
-import { Form } from '@unform/web';
 import { Box, Grid, LinearProgress, Paper, Typography } from '@mui/material';
 
 
@@ -136,7 +135,7 @@ export const DetalheDeHospital: React.FC = () => {
         />
       }
     >
-      <Form ref={formRef} onSubmit={handleSave}>
+      <VForm ref={formRef} onSubmit={handleSave}>
         <Box margin={1} display="flex" flexDirection="column" component={Paper} variant="outlined">
 
           {isLoading && (
@@ -172,7 +171,7 @@ export const DetalheDeHospital: React.FC = () => {
             </Grid>
           </Grid>
         </Box>
-      </Form>
+      </VForm>
 
     </LayoutBaseDePagina >
   );
