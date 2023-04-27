@@ -12,9 +12,6 @@ import {
     ListagemDaAgenda,
     ListagemDeHospitais,
     ListagemDePacientes,
-
-    Listagem,
-    Detalhe,
 } from '../pages';
 
 export const AppRoutes = () => {

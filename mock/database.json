@@ -3,8 +3,8 @@
     {
       "id": 1,
       "pacienteNome": "FULANO DE TAL",
-      "pacienteCPF": "123.456.789-10",
       "pacienteNascimento": "01/01/1990",
+      "pacienteCPF": "123.456.789-10",
       "pacienteTelefone": "(83) 99999-9999",
       "pacienteResidencia": "CENTRO",
       "pacienteComorbidade": "SEM COMORBIDADE"
