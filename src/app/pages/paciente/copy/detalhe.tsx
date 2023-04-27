@@ -4,7 +4,7 @@ import { Box, Grid, LinearProgress, Paper, Typography } from '@mui/material';
 import { Form } from '@unform/web';
 import * as yup from 'yup';
 
-import { HospitalService } from "@/app/shared/services/api/hospital/HospitalService";
+import { AgendaService } from "@/app/shared/services/api/agenda/AgendaService";
 import { FerramentasDeDetalhe } from '@/app/shared/components';
 import { LayoutBaseDePagina } from '@/app/shared/layouts';
 import { IVFormErrors, VTextField, useVForm } from '@/app/shared/forms';
@@ -12,14 +12,30 @@ import { IVFormErrors, VTextField, useVForm } from '@/app/shared/forms';
 
 interface IFormData {
   hospitalNome: string;
-  hospitalEstado: string;
+  pacienteNome: string;
+  pacienteCPF: string;
+  pacienteTelefone: string;
+  agendaHoraSaida: string;
+  agendaMarcado: string;
+  agendaNome: string;
+  agendaStatus: string;
+  agendaCarro: string;
+  agendaData: string;
 }
 const formValidationSchema: yup.Schema<IFormData> = yup.object().shape({
-  hospitalNome: yup.string().required('Nome é obrigatório').min(3, 'Nome deve ter no mínimo 3 caracteres'),
-  hospitalEstado: yup.string().required('Estado é obrigatório').min(2, 'Estado deve ter no mínimo 2 caracteres'),
+  hospitalNome: yup.string().required('Hospital é obrigatório'),
+  pacienteNome: yup.string().required('Nome é obrigatório'),
+  pacienteCPF: yup.string().required('CPF é obrigatório'),
+  pacienteTelefone: yup.string().required('Telefone é obrigatório'),
+  agendaHoraSaida: yup.string().required('Hora de saída é obrigatório'),
+  agendaMarcado: yup.string().required('Marcado é obrigatório'),
+  agendaNome: yup.string().required('agenda é obrigatório'),
+  agendaStatus: yup.string().required('Status é obrigatório'),
+  agendaCarro: yup.string().required('Carro é obrigatório'),
+  agendaData: yup.string().required('Data é obrigatório'),
 });
 
-export const DetalheDeHospital: React.FC = () => {
+export const Detalhe: React.FC = () => {
   const { formRef, save, saveAndClose, isSaveAndClose } = useVForm();
   const { id = 'novo' } = useParams<'id'>();
   const navigate = useNavigate();
@@ -31,22 +47,30 @@ export const DetalheDeHospital: React.FC = () => {
   useEffect(() => {
     if (id !== 'novo') {
       setIsLoading(true);
-      HospitalService.getById(Number(id))
+      AgendaService.getById(Number(id))
         .then((result) => {
           setIsLoading(false);
 
           if (result instanceof Error) {
             alert(result.message);
-            navigate('/hospital');
+            navigate('/agenda');
           } else {
-            setNome(result.hospitalNome);
+            setNome(result.pacienteNome);
             formRef.current?.setData(result);
           }
         });
     } else {
       formRef.current?.setData({
         hospitalNome: '',
-        hospitalEstado: '',
+        pacienteNome: '',
+        pacienteCPF: '',
+        pacienteTelefone: '',
+        agendaHoraSaida: '',
+        agendaMarcado: '',
+        agendaNome: '',
+        agendaStatus: '',
+        agendaCarro: '',
+        agendaData: '',
       });
     }
   }, [formRef, id, navigate]);
@@ -58,7 +82,7 @@ export const DetalheDeHospital: React.FC = () => {
       .then((dadosValidados) => {
         setIsLoading(true);
         if (id === 'novo') {
-          HospitalService
+          AgendaService
             .create(dadosValidados)
             .then((result) => {
               setIsLoading(false);
@@ -67,14 +91,14 @@ export const DetalheDeHospital: React.FC = () => {
                 alert(result.message);
               } else {
                 if (isSaveAndClose()) {
-                  navigate('/hospital');
+                  navigate('/agenda');
                 } else {
-                  navigate(`/hospital/detalhe/${result}`);
+                  navigate(`/agenda/detalhe/${result}`);
                 }
               }
             });
         } else {
-          HospitalService
+          AgendaService
             .updateById(Number(id), { id: Number(id), ...dadosValidados })
             .then((result) => {
               setIsLoading(false);
@@ -83,7 +107,7 @@ export const DetalheDeHospital: React.FC = () => {
                 alert(result.message);
               } else {
                 if (isSaveAndClose()) {
-                  navigate('/hospital');
+                  navigate('/agenda');
                 }
               }
             });
@@ -103,13 +127,13 @@ export const DetalheDeHospital: React.FC = () => {
 
   const handleDelete = (id: number) => {
     if (confirm('Realmente deseja apagar?')) {
-      HospitalService.deleteById(id)
+      AgendaService.deleteById(id)
         .then(result => {
           if (result instanceof Error) {
             alert(result.message);
           } else {
             alert('Registro apagado com sucesso!');
-            navigate('/hospital');
+            navigate('/agenda');
           }
         });
     }
@@ -118,7 +142,7 @@ export const DetalheDeHospital: React.FC = () => {
 
   return (
     <LayoutBaseDePagina
-      titulo={id === 'novo' ? 'Novo pessoa' : nome}
+      titulo={id === 'novo' ? 'Novo Agendamento' : nome}
       barraDeFerramentas={
         <FerramentasDeDetalhe
           textoBotaoNovo='Novo'
@@ -128,9 +152,9 @@ export const DetalheDeHospital: React.FC = () => {
 
           aoClicarEmSalvar={save}
           aoClicarEmSalvarEFechar={saveAndClose}
-          aoClicarEmVoltar={() => navigate('/hospital')}
+          aoClicarEmVoltar={() => navigate('/agenda')}
           aoClicarEmApagar={() => handleDelete(Number(id))}
-          aoClicarEmNovo={() => navigate('/hospital/detalhe/novo')}
+          aoClicarEmNovo={() => navigate('/agenda/detalhe/novo')}
         />
       }
     >
@@ -144,13 +168,13 @@ export const DetalheDeHospital: React.FC = () => {
           )}
 
           <Grid item>
-            <Typography variant="h6" component="div" sx={{ p: 2 }}> Cadastrar Hospital </Typography>
+            <Typography variant="h6" component="div" sx={{ p: 2 }}> Cadastrar agenda </Typography>
           </Grid>
 
           <Grid container direction="row" padding={2} spacing={2}>
             <Grid item xs={12} sm={6}>
               <VTextField
-                name='hospitalNome'
+                name='agendaNome'
                 label='Nome'
                 variant='outlined'
                 fullWidth
@@ -161,7 +185,7 @@ export const DetalheDeHospital: React.FC = () => {
 
             <Grid item xs={12} sm={6}>
               <VTextField
-                name='hospitalEstado'
+                name='agendaEstado'
                 label='Estado'
                 variant='outlined'
                 fullWidth

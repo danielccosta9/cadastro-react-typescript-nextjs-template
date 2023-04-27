@@ -29,8 +29,8 @@ const formValidationSchema: yup.Schema<IFormData> = yup.object().shape({
 });
 
 export const DetalheDePacientes: React.FC = () => {
-  const { id = 'novo' } = useParams<'id'>();
   const { formRef, save, saveAndClose, isSaveAndClose } = useVForm();
+  const { id = 'novo' } = useParams<'id'>();
   const navigate = useNavigate();
 
 
@@ -40,19 +40,17 @@ export const DetalheDePacientes: React.FC = () => {
   useEffect(() => {
     if (id !== 'novo') {
       setIsLoading(true);
+
       PacienteService.getById(Number(id))
         .then((result) => {
           setIsLoading(false);
+
           if (result instanceof Error) {
             alert(result.message);
+            navigate('/paciente');
           } else {
-            if (isSaveAndClose()) {
-              navigate('/paciente');
-            } else {
-              setNome(result.pacienteNome);
-              formRef.current?.setData(result);
-              navigate(`/paciente/detalhe/${result}`);
-            }
+            setNome(result.pacienteNome);
+            formRef.current?.setData(result);
           }
         });
     } else {
@@ -65,15 +63,14 @@ export const DetalheDePacientes: React.FC = () => {
         pacienteComorbidade: '',
       });
     }
-  }, [formRef, navigate, id, isSaveAndClose]);
+  }, [formRef, id, navigate]);
+
 
   const handleSave = (dados: IFormData) => {
-
     formValidationSchema.
       validate(dados, { abortEarly: false })
       .then((dadosValidados) => {
         setIsLoading(true);
-
         if (id === 'novo') {
           PacienteService
             .create(dadosValidados)
@@ -108,7 +105,6 @@ export const DetalheDePacientes: React.FC = () => {
       })
       .catch((errors: yup.ValidationError) => {
         const validationErrors: IVFormErrors = {};
-
         errors.inner.forEach(error => {
           if (!error.path) return;
 
@@ -118,8 +114,6 @@ export const DetalheDePacientes: React.FC = () => {
         formRef.current?.setErrors(validationErrors);
       });
   };
-
-
 
   const handleDelete = (id: number) => {
     if (confirm('Realmente deseja apagar?')) {
@@ -138,10 +132,11 @@ export const DetalheDePacientes: React.FC = () => {
 
   return (
     <LayoutBaseDePagina
-      titulo={id === 'novo' ? 'Novo Paciente' : nome}
+      titulo={id === 'novo' ? 'Novo pessoa' : nome}
       barraDeFerramentas={
         <FerramentasDeDetalhe
           textoBotaoNovo='Novo'
+          mostrarBotaoSalvarEFechar
           mostrarBotaoNovo={id !== 'novo'}
           mostrarBotaoApagar={id !== 'novo'}
 
@@ -230,6 +225,6 @@ export const DetalheDePacientes: React.FC = () => {
           </Grid>
         </Box>
       </Form>
-    </LayoutBaseDePagina >
+    </LayoutBaseDePagina>
   );
 };

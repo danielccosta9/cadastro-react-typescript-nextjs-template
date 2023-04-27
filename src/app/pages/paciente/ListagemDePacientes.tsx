@@ -10,6 +10,7 @@ import {
     Icon,
     IconButton,
     LinearProgress,
+    Pagination,
     Paper,
     Table,
     TableBody,
@@ -21,8 +22,8 @@ import {
     TableRow,
 } from '@mui/material';
 
-export const ListagemDePacientes: React.FC = () => {
 
+export const ListagemDePacientes: React.FC = () => {
     const [searchParams, setSearchParams] = useSearchParams();
     const { debounce } = useDebounce();
     const navigate = useNavigate();
@@ -122,59 +123,56 @@ export const ListagemDePacientes: React.FC = () => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {filteredPacientes
-                            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                            .map((paciente, index) => (
-                                <TableRow
-                                    key={index}
-                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                    hover>
-                                    <TableCell align="left">{paciente.pacienteNome}</TableCell>
-                                    <TableCell align="left">{paciente.pacienteCPF}</TableCell>
-                                    <TableCell align="left">{paciente.pacienteNascimento}</TableCell>
-                                    <TableCell align="left">{paciente.pacienteTelefone}</TableCell>
-                                    <TableCell align="left">{paciente.pacienteResidencia}</TableCell>
-                                    <TableCell align="right">
-                                        <IconButton
-                                            onClick={handleDelete.bind(this, paciente.id)}
-                                        >
-                                            <Icon color="error">delete</Icon>
-                                        </IconButton>
-                                        <IconButton
-                                            onClick={() => navigate(`/paciente/detalhe/${paciente.id}`)}
-                                        >
-                                            <Icon color="secondary">edit</Icon>
-                                        </IconButton>
-                                    </TableCell>
-                                </TableRow>
-                            ))}
+                        {rows.map(paciente => (
+                            <TableRow 
+                                key={paciente.id}
+                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                hover
+                            >
+                                <TableCell align="left">{paciente.pacienteNome}</TableCell>
+                                <TableCell align="left">{paciente.pacienteCPF}</TableCell>
+                                <TableCell align="left">{paciente.pacienteNascimento}</TableCell>
+                                <TableCell align="left">{paciente.pacienteTelefone}</TableCell>
+                                <TableCell align="left">{paciente.pacienteResidencia}</TableCell>
+                                <TableCell align="right">
+                                    <IconButton
+                                        onClick={handleDelete.bind(this, paciente.id)}
+                                    >
+                                        <Icon color="error">delete</Icon>
+                                    </IconButton>
+                                    <IconButton
+                                        onClick={() => navigate(`/paciente/detalhe/${paciente.id}`)}
+                                    >
+                                        <Icon color="secondary">edit</Icon>
+                                    </IconButton>
+                                </TableCell>
+                            </TableRow>
+                        ))}
                     </TableBody>
+
                     {totalCount === 0 && !isLoading && (
                         <caption>{Environment.LISTAGEM_VAZIA}</caption>
                     )}
+
                     <TableFooter>
                         {isLoading && (
                             <TableRow>
-                                <TableCell colSpan={12}>
+                                <TableCell colSpan={3}>
                                     <LinearProgress variant='indeterminate' />
                                 </TableCell>
                             </TableRow>
                         )}
-                        <TableRow>
-                            <TableCell colSpan={12}>
-                                <TablePagination                            
-                                    page={page}
-                                    component="div"
-                                    rowsPerPage={rowsPerPage}
-                                    count={quantidadeDePaginas}
-                                    onPageChange={handleChangePage}
-                                    rowsPerPageOptions={[5, 10, 25, 50]}
-                                    onRowsPerPageChange={handleChangeRowsPerPage}
-                                    nextIconButtonProps={{ "aria-label": "Next Page" }}
-                                    backIconButtonProps={{ "aria-label": "Previous Page" }}
-                                />
-                            </TableCell>
-                        </TableRow>
+                        {(totalCount > 0 && totalCount > Environment.LIMITE_DE_LINHAS) && (
+                            <TableRow>
+                                <TableCell colSpan={3}>
+                                    <Pagination
+                                        page={pagina}
+                                        count={Math.ceil(totalCount / Environment.LIMITE_DE_LINHAS)}
+                                        onChange={(_, newPage) => setSearchParams({ busca, pagina: newPage.toString() }, { replace: true })}
+                                    />
+                                </TableCell>
+                            </TableRow>
+                        )}
                     </TableFooter>
                 </Table>
             </TableContainer>

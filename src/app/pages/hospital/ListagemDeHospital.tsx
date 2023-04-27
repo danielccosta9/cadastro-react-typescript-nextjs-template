@@ -10,6 +10,7 @@ import {
     Icon,
     IconButton,
     LinearProgress,
+    Pagination,
     Paper,
     Table,
     TableBody,
@@ -17,20 +18,18 @@ import {
     TableContainer,
     TableFooter,
     TableHead,
-    TablePagination,
     TableRow,
 } from '@mui/material';
 
-export const ListagemDeHospitais: React.FC = () => {
 
+export const ListagemDeHospitais: React.FC = () => {
     const [searchParams, setSearchParams] = useSearchParams();
     const { debounce } = useDebounce();
     const navigate = useNavigate();
+
     const [rows, setRows] = useState<IListagemHospital[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [totalCount, setTotalCount] = useState(0);
-    const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(5);
 
 
     const busca = useMemo(() => {
@@ -44,6 +43,7 @@ export const ListagemDeHospitais: React.FC = () => {
 
     useEffect(() => {
         setIsLoading(true);
+
         debounce(() => {
             HospitalService.getAll(pagina, busca)
                 .then((result) => {
@@ -77,28 +77,10 @@ export const ListagemDeHospitais: React.FC = () => {
         }
     };
 
-    const handleChangePage = (event: unknown, newPage: number) => {
-        setPage(newPage);
-        setSearchParams({ pagina: String(newPage + 1) }, { replace: true });
-    };
-
-    const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setRowsPerPage(Number(event.target.value));
-        setPage(0);
-        setSearchParams({ pagina: '1' }, { replace: true });
-    };
-
-    const filteredHospital = useMemo(() => {
-        return rows.filter(hospital => {
-            return hospital.hospitalNome.toLowerCase().includes(busca.toLowerCase());
-        });
-    }, [busca, rows]);
-
-    const quantidadeDePaginas = filteredHospital.length
 
     return (
         <LayoutBaseDePagina
-            titulo='Listagem dos Hospital'
+            titulo='Listagem dos Hospitais'
             barraDeFerramentas={
                 <FerramentasDaListagem
                     mostrarInputBusca
@@ -119,56 +101,53 @@ export const ListagemDeHospitais: React.FC = () => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {filteredHospital
-                            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                            .map((hospital, index) => (
-                                <TableRow
-                                    key={index}
-                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                    hover>
-                                    <TableCell align="left">{hospital.hospitalNome}</TableCell>
-                                    <TableCell align="left">{hospital.hospitalEstado}</TableCell>
-                                    <TableCell align="right">
-                                        <IconButton
-                                            onClick={handleDelete.bind(this, hospital.id)}
-                                        >
-                                            <Icon color="error">delete</Icon>
-                                        </IconButton>
-                                        <IconButton
-                                            onClick={() => navigate(`/hospital/detalhe/${hospital.id}`)}
-                                        >
-                                            <Icon color="secondary">edit</Icon>
-                                        </IconButton>
-                                    </TableCell>
-                                </TableRow>
-                            ))}
+                        {rows.map(hospital => (
+                            <TableRow
+                                key={hospital.id}
+                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                hover
+                            >
+                                <TableCell align="left">{hospital.hospitalNome}</TableCell>
+                                <TableCell align="left">{hospital.hospitalEstado}</TableCell>
+                                <TableCell align="right">
+                                    <IconButton
+                                        onClick={handleDelete.bind(this, hospital.id)}
+                                    >
+                                        <Icon color="error">delete</Icon>
+                                    </IconButton>
+                                    <IconButton
+                                        onClick={() => navigate(`/hospital/detalhe/${hospital.id}`)}
+                                    >
+                                        <Icon color="secondary">edit</Icon>
+                                    </IconButton>
+                                </TableCell>
+                            </TableRow>
+                        ))}
                     </TableBody>
+
                     {totalCount === 0 && !isLoading && (
                         <caption>{Environment.LISTAGEM_VAZIA}</caption>
                     )}
+
                     <TableFooter>
                         {isLoading && (
                             <TableRow>
-                                <TableCell colSpan={12}>
+                                <TableCell colSpan={3}>
                                     <LinearProgress variant='indeterminate' />
                                 </TableCell>
                             </TableRow>
                         )}
-                        <TableRow>
-                            <TableCell colSpan={12}>
-                                <TablePagination                            
-                                    page={page}
-                                    component="div"
-                                    rowsPerPage={rowsPerPage}
-                                    count={quantidadeDePaginas}
-                                    onPageChange={handleChangePage}
-                                    rowsPerPageOptions={[5, 10, 25, 50]}
-                                    onRowsPerPageChange={handleChangeRowsPerPage}
-                                    nextIconButtonProps={{ "aria-label": "Next Page" }}
-                                    backIconButtonProps={{ "aria-label": "Previous Page" }}
-                                />
-                            </TableCell>
-                        </TableRow>
+                        {(totalCount > 0 && totalCount > Environment.LIMITE_DE_LINHAS) && (
+                            <TableRow>
+                                <TableCell colSpan={3}>
+                                    <Pagination
+                                        page={pagina}
+                                        count={Math.ceil(totalCount / Environment.LIMITE_DE_LINHAS)}
+                                        onChange={(_, newPage) => setSearchParams({ busca, pagina: newPage.toString() }, { replace: true })}
+                                    />
+                                </TableCell>
+                            </TableRow>
+                        )}
                     </TableFooter>
                 </Table>
             </TableContainer>

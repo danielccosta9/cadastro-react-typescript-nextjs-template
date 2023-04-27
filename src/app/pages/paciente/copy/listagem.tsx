@@ -22,7 +22,7 @@ import {
 } from '@mui/material';
 
 
-export const ListagemDaAgenda: React.FC = () => {
+export const Listagem: React.FC = () => {
     const [searchParams, setSearchParams] = useSearchParams();
     const { debounce } = useDebounce();
     const navigate = useNavigate();
