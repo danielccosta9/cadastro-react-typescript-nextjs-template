@@ -169,5 +169,31 @@
       "agendaCarro": "SIM",
       "agendaStatus": "AGUARDANDO"
     }
+  ],
+  "residencia": [
+    {
+      "id": 1,
+      "nome": "CENTRO"
+    },
+    {
+      "id": 2,
+      "nome": "ZONA RURAL"
+    },
+    {
+      "id": 3,
+      "nome": "BAIRRO - BELA VISTA"
+    },
+    {
+      "id": 4,
+      "nome": "BAIRRO - CASTELO BRANCO"
+    },
+    {
+      "id": 5,
+      "nome": "SÍTIO - OLHO D'ÁGUA"
+    },
+    {
+      "id": 6,
+      "nome": "SÍTIO - SÃO JOÃO"
+    }
   ]
 }

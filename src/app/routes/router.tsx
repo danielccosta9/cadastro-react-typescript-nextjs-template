@@ -8,10 +8,12 @@ import {
     DetalheDeAgenda,
     DetalheDeHospital,
     DetalheDePacientes,
+    DetalheDeResidencias,
 
     ListagemDaAgenda,
     ListagemDeHospitais,
     ListagemDePacientes,
+    ListagemDeResidencias,
 } from '../pages';
 
 export const AppRoutes = () => {
@@ -39,6 +41,11 @@ export const AppRoutes = () => {
                 path: '/hospital',
                 label: 'Hospital',
             },
+            {
+                icon: 'home',
+                path: '/residencia',
+                label: 'Residencia',
+            },
         ]);
     }, [setDrawerOptions]);
 
@@ -54,6 +61,9 @@ export const AppRoutes = () => {
 
             <Route path="/paciente" element={<ListagemDePacientes />} />
             <Route path="/paciente/detalhe/:id" element={<DetalheDePacientes />} />
+
+            <Route path="/residencia" element={<ListagemDeResidencias />} />
+            <Route path="/residencia/detalhe/:id" element={<DetalheDeResidencias />} />
 
             <Route path="*" element={<Navigate to="/dashboard" />} />
         </Routes>
