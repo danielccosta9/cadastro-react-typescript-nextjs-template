@@ -8,6 +8,7 @@ import { PacienteService } from "@/app/shared/services/api/paciente/PacienteServ
 import { FerramentasDeDetalhe } from '@/app/shared/components';
 import { LayoutBaseDePagina } from '@/app/shared/layouts';
 import { IVFormErrors, VTextField, useVForm } from '@/app/shared/forms';
+import { AutoCompleteResidencia } from './components/AutoCompleteResidencia';
 
 
 interface IFormData {
@@ -15,7 +16,7 @@ interface IFormData {
   pacienteCPF: string;
   pacienteNascimento: string;
   pacienteTelefone: string;
-  pacienteResidencia: string;
+  residenciaId: number;
   pacienteComorbidade: string;
 }
 const formValidationSchema: yup.Schema<IFormData> = yup.object().shape({
@@ -23,7 +24,7 @@ const formValidationSchema: yup.Schema<IFormData> = yup.object().shape({
   pacienteCPF: yup.string().required('O CPF é obrigatório').min(14, 'O CPF deve ter no mínimo 11 caracteres'),
   pacienteNascimento: yup.string().required('A data de nascimento é obrigatória'),
   pacienteTelefone: yup.string().required('O telefone é obrigatório').min(14, 'O telefone deve ter no mínimo 11 caracteres'),
-  pacienteResidencia: yup.string().required('A residência é obrigatória').min(3, 'A residência deve ter no mínimo 3 caracteres'),
+  residenciaId: yup.number().required('A residência é obrigatória'),
   pacienteComorbidade: yup.string().required('A comorbidade é obrigatória').min(3, 'A comorbidade deve ter no mínimo 3 caracteres'),
 
 });
@@ -59,14 +60,17 @@ export const DetalheDePacientes: React.FC = () => {
         pacienteCPF: '',
         pacienteNascimento: '',
         pacienteTelefone: '',
-        pacienteResidencia: '',
         pacienteComorbidade: '',
+        residenciaId: undefined,
       });
     }
   }, [formRef, id, navigate]);
 
 
   const handleSave = (dados: IFormData) => {
+
+    console.log(dados);
+
     formValidationSchema.
       validate(dados, { abortEarly: false })
       .then((dadosValidados) => {
@@ -128,6 +132,8 @@ export const DetalheDePacientes: React.FC = () => {
         });
     }
   };
+
+  console.log(nome)
 
 
   return (
@@ -205,13 +211,7 @@ export const DetalheDePacientes: React.FC = () => {
               />
             </Grid>
             <Grid item xs={12} sm={5}>
-              <VTextField
-                name='pacienteResidencia'
-                label='Residência'
-                variant='outlined'
-                fullWidth
-                disabled={isLoading}
-              />
+              <AutoCompleteResidencia isExternalLoading={isLoading} />
             </Grid>
             <Grid item xs={12} sm={4}>
               <VTextField

@@ -6,62 +6,8 @@
       "pacienteNascimento": "01/01/1990",
       "pacienteCPF": "123.456.789-10",
       "pacienteTelefone": "(83) 99999-9999",
-      "pacienteResidencia": "CENTRO",
+      "residenciaId": 5,
       "pacienteComorbidade": "SEM COMORBIDADE"
-    },
-    {
-      "id": 2,
-      "pacienteNome": "BELTRANO DE TAL",
-      "pacienteCPF": "123.456.789-10",
-      "pacienteNascimento": "01/01/1990",
-      "pacienteTelefone": "(83) 99999-9999",
-      "pacienteResidencia": "CENTRO",
-      "pacienteComorbidade": "SEM COMORBIDADE"
-    },
-    {
-      "id": 3,
-      "pacienteNome": "CICLANO DE TAL",
-      "pacienteCPF": "123.456.789-10",
-      "pacienteNascimento": "01/01/1990",
-      "pacienteTelefone": "(83) 99999-9999",
-      "pacienteResidencia": "CENTRO",
-      "pacienteComorbidade": "SEM COMORBIDADE"
-    },
-    {
-      "id": 5,
-      "pacienteNome": "DANIEL TESTE ",
-      "pacienteNascimento": "21/12/2023",
-      "pacienteCPF": "123.456.123-10",
-      "pacienteTelefone": "(83) 98120-3050",
-      "pacienteResidencia": "CENTRO",
-      "pacienteComorbidade": "SEM COMORBIDADE"
-    },
-    {
-      "pacienteNome": "DANIEL TESTE 2",
-      "pacienteNascimento": "21/12/2023",
-      "pacienteCPF": "123.231.213-13",
-      "pacienteTelefone": "(83) 21232-5412",
-      "pacienteResidencia": "CENTRO",
-      "pacienteComorbidade": "SEM COMORBIDADE",
-      "id": 6
-    },
-    {
-      "pacienteNome": "FULANO DE TAL 2",
-      "pacienteNascimento": "12/12/2012",
-      "pacienteCPF": "213.321.213-12",
-      "pacienteTelefone": "(83) 32141-1234",
-      "pacienteResidencia": "CENTRO",
-      "pacienteComorbidade": "SEM COMORBIDADE",
-      "id": 7
-    },
-    {
-      "pacienteNome": "DANIEL TESTE 3",
-      "pacienteNascimento": "12/12/1212",
-      "pacienteCPF": "123.231.321-12",
-      "pacienteTelefone": "(83) 00203-1234",
-      "pacienteResidencia": "CENTRO",
-      "pacienteComorbidade": "SEM COMORBIDADE",
-      "id": 8
     }
   ],
   "hospital": [
@@ -194,6 +140,10 @@
     {
       "id": 6,
       "nome": "SÍTIO - SÃO JOÃO"
+    },
+    {
+      "nome": "SÍTIO - CIPOAL",
+      "id": 7
     }
   ]
 }

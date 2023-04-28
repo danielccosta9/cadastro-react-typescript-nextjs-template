@@ -7,7 +7,7 @@ export interface IListagemPaciente {
     pacienteCPF: string;
     pacienteNascimento: string;
     pacienteTelefone: string;
-    pacienteResidencia: string;
+    residenciaId: number;
     pacienteComorbidade: string;
 }
 
@@ -17,7 +17,7 @@ export interface IDetalhesPaciente {
     pacienteCPF: string;
     pacienteNascimento: string;
     pacienteTelefone: string;
-    pacienteResidencia: string;
+    residenciaId: number;
     pacienteComorbidade: string;
 }
 

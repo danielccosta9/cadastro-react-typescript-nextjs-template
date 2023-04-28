@@ -43,7 +43,6 @@ export const ListagemDeResidencias: React.FC = () => {
 
     useEffect(() => {
         setIsLoading(true);
-
         debounce(() => {
             ResidenciaService.getAll(pagina, busca)
                 .then((result) => {

@@ -44,7 +44,7 @@ export const AppRoutes = () => {
             {
                 icon: 'home',
                 path: '/residencia',
-                label: 'Residencia',
+                label: 'Residência',
             },
         ]);
     }, [setDrawerOptions]);

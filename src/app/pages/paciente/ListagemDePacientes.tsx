@@ -18,7 +18,6 @@ import {
     TableContainer,
     TableFooter,
     TableHead,
-    TablePagination,
     TableRow,
 } from '@mui/material';
 
@@ -133,7 +132,7 @@ export const ListagemDePacientes: React.FC = () => {
                                 <TableCell align="left">{paciente.pacienteCPF}</TableCell>
                                 <TableCell align="left">{paciente.pacienteNascimento}</TableCell>
                                 <TableCell align="left">{paciente.pacienteTelefone}</TableCell>
-                                <TableCell align="left">{paciente.pacienteResidencia}</TableCell>
+                                <TableCell align="left">{paciente.residenciaId}</TableCell>
                                 <TableCell align="right">
                                     <IconButton
                                         onClick={handleDelete.bind(this, paciente.id)}
