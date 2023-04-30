@@ -6,6 +6,24 @@
       "pacienteNascimento": "01/01/1990",
       "pacienteCPF": "123.456.789-10",
       "pacienteTelefone": "(83) 99999-9999",
+      "residenciaId": 1,
+      "pacienteComorbidade": "SEM COMORBIDADE"
+    },
+    {
+      "pacienteNome": "TESTE COM MASCARA",
+      "pacienteNascimento": "30/04/2023",
+      "pacienteCPF": "123.456.789-10",
+      "pacienteTelefone": "(83) 00000-0000",
+      "residenciaId": 4,
+      "pacienteComorbidade": "SEM COMORBIDADES",
+      "id": 2
+    },
+    {
+      "id": 3,
+      "pacienteNome": "TESTE COM MASCARA DOIS",
+      "pacienteNascimento": "30/04/2023",
+      "pacienteCPF": "123.321.123-10",
+      "pacienteTelefone": "(83) 12345-6890",
       "residenciaId": 5,
       "pacienteComorbidade": "SEM COMORBIDADE"
     }
@@ -144,6 +162,10 @@
     {
       "nome": "SÍTIO - CIPOAL",
       "id": 7
+    },
+    {
+      "nome": "SÍTIO - CANAFISTULA",
+      "id": 8
     }
   ]
 }

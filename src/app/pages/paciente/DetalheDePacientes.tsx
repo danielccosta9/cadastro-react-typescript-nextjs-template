@@ -9,6 +9,7 @@ import { FerramentasDeDetalhe } from '@/app/shared/components';
 import { LayoutBaseDePagina } from '@/app/shared/layouts';
 import { IVFormErrors, VTextField, useVForm } from '@/app/shared/forms';
 import { AutoCompleteResidencia } from './components/AutoCompleteResidencia';
+import { IMaskInput } from 'react-imask';
 
 
 interface IFormData {
@@ -20,12 +21,12 @@ interface IFormData {
   pacienteComorbidade: string;
 }
 const formValidationSchema: yup.Schema<IFormData> = yup.object().shape({
-  pacienteNome: yup.string().required('O nome é obrigatório').min(3, 'O nome deve ter no mínimo 3 caracteres'),
+  pacienteNome: yup.string().required('O nome é obrigatório').min(3, 'O nome deve ter no mínimo 3 caracteres').matches(/^[a-zA-Z\s]*$/, 'Não pode conter números'),
   pacienteCPF: yup.string().required('O CPF é obrigatório').min(14, 'O CPF deve ter no mínimo 11 caracteres'),
   pacienteNascimento: yup.string().required('A data de nascimento é obrigatória'),
   pacienteTelefone: yup.string().required('O telefone é obrigatório').min(14, 'O telefone deve ter no mínimo 11 caracteres'),
   residenciaId: yup.number().required('A residência é obrigatória'),
-  pacienteComorbidade: yup.string().required('A comorbidade é obrigatória').min(3, 'A comorbidade deve ter no mínimo 3 caracteres'),
+  pacienteComorbidade: yup.string().required('A comorbidade é obrigatória').min(3, 'A comorbidade deve ter no mínimo 3 caracteres').matches(/^[a-zA-Z\s]*$/, 'Não pode conter números'),
 
 });
 
@@ -186,6 +187,16 @@ export const DetalheDePacientes: React.FC = () => {
                 variant='outlined'
                 fullWidth
                 disabled={isLoading}
+                InputProps={{
+                  inputComponent: IMaskInput as any,
+                  inputProps: {
+                    mask: "00/00/0000",
+                    definitions: {
+                      '#': /[1-9]/,
+                    },
+                    overwrite: true,
+                  },
+                }}
               />
             </Grid>
             <Grid item xs={12} sm={3}>
@@ -195,6 +206,16 @@ export const DetalheDePacientes: React.FC = () => {
                 variant='outlined'
                 fullWidth
                 disabled={isLoading}
+                InputProps={{
+                  inputComponent: IMaskInput as any,
+                  inputProps: {
+                    mask: "000.000.000-00",
+                    definitions: {
+                      '#': /[1-9]/,
+                    },
+                    overwrite: true,
+                  },
+                }}
               />
             </Grid>
 
@@ -208,6 +229,17 @@ export const DetalheDePacientes: React.FC = () => {
                 variant='outlined'
                 fullWidth
                 disabled={isLoading}
+                InputProps={{
+                  inputComponent: IMaskInput as any,
+                  inputProps: {
+                    mask: "(00) 00000-0000",
+                    definitions: {
+                      '#': /[1-9]/,
+                    },
+                    overwrite: true,
+                  },
+                }}
+
               />
             </Grid>
             <Grid item xs={12} sm={5}>
