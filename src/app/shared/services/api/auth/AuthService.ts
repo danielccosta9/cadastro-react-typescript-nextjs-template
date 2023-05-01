@@ -1,6 +1,5 @@
 import { Api } from "../axios-config";
 
-
 interface IAuth {
     accessToken: string;
 }

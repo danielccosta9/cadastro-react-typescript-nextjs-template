@@ -5,6 +5,9 @@ import { Environment } from "@/app/shared/environment";
 
 const Api = Axios.create({
     baseURL: Environment.URL_BASE,
+    headers: {
+        authorization: `Bearer ${localStorage.getItem('APP_ACCESS_TOKEN')}`,
+    },
 });
 
 Api.interceptors.response.use(

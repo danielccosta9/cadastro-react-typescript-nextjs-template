@@ -1,12 +1,11 @@
 {
-  "user": [
+  "users": [
     {
       "id": 1,
-      "userNome": "ADMIN",
+      "email": "daniel@pma1.com",
       "password": "123456",
       "role": "ADMIN"
     }
-
   ],
   "auth": {
     "accessToken": "aaaa.bbbb.cccc"
@@ -37,6 +36,15 @@
       "pacienteCPF": "123.321.123-10",
       "pacienteTelefone": "(83) 12345-6890",
       "residenciaId": 5,
+      "pacienteComorbidade": "SEM COMORBIDADE"
+    },
+    {
+      "id": 4,
+      "pacienteNome": "TESTE OBS UM",
+      "pacienteNascimento": "30/04/2023",
+      "pacienteCPF": "123.456.789-10",
+      "pacienteTelefone": "(83) 00000-0000",
+      "residenciaId": 1,
       "pacienteComorbidade": "SEM COMORBIDADE"
     }
   ],
