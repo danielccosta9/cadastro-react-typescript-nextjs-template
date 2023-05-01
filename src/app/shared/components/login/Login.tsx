@@ -10,108 +10,95 @@ const loginSchema = yup.object().shape({
 
 interface ILoginProps {
     children: React.ReactNode;
-}
-
-export const Login: React.FC<ILoginProps> = ({ children }) => {
-    const { isAuthenticaded, login } = useAuthContext();
-    const [isLogin, setIsLogin] = useState(false);
-
-    const [email, setEmail] = useState('');
-    const [emailError, setEmailError] = useState('');
-
-    const [password, setPassword] = useState('');
+  }
+  export const Login: React.FC<ILoginProps> = ({ children }) => {
+    const { isAuthenticated, login } = useAuthContext();
+  
+    const [isLoading, setIsLoading] = useState(false);
+  
     const [passwordError, setPasswordError] = useState('');
-
-    if (isAuthenticaded) {
-        return (
-            <>
-                {children}
-            </>
-        )
-    }
-
+    const [emailError, setEmailError] = useState('');
+    const [password, setPassword] = useState('');
+    const [email, setEmail] = useState('');
+  
+  
     const handleSubmit = () => {
-        setIsLogin(true);
-        loginSchema
-            .validate({ email, password }, { abortEarly: false })
-            .then((dadosValidados) => {
-                login(dadosValidados.email, dadosValidados.password)
-                    .then(() => {
-                        setIsLogin(false);
-                    });
-            })
-            .catch((errors: yup.ValidationError) => {
-                setIsLogin(false);
-                errors.inner.forEach((error) => {
-                    if (error.path === 'email') {
-                        setEmailError(error.message);
-                    }
-                    if (error.path === 'password') {
-                        setPasswordError(error.message);
-                    }
-                });
+      setIsLoading(true);
+  
+      loginSchema
+        .validate({ email, password }, { abortEarly: false })
+        .then(dadosValidados => {
+          login(dadosValidados.email, dadosValidados.password)
+            .then(() => {
+              setIsLoading(false);
             });
-    }
-
-
-    return (
-        <Box
-            sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                height: '100vh',
-                width: '100vw'
-            }}
-        >
-            <Card>
-                <CardContent>
-                    <Box width={350} display='flex' flexDirection='column' gap={2}>
-                        <Typography variant="h6" align="center">
-                            Informe suas credenciais
-                        </Typography>
-                        <TextField
-                            id="outlined-basic"
-                            label="Email"
-                            variant="outlined"
-                            type="email"
-                            fullWidth
-                            value={email}
-                            error={!!emailError}
-                            helperText={emailError}
-                            onKeyDown={() => setEmailError('')}
-                            onChange={(e) => setEmail(e.target.value)}
-                            disabled={isLogin}
-                        />
-                        <TextField
-                            id="outlined-basic"
-                            label="Senha"
-                            variant="outlined"
-                            type="password"
-                            fullWidth
-                            value={password}
-                            error={!!passwordError}
-                            helperText={passwordError}
-                            onKeyDown={() => setPasswordError('')}
-                            onChange={(e) => setPassword(e.target.value)}
-                            disabled={isLogin}
-                        />
-                    </Box>
-                </CardContent>
-                <CardActions>
-                    <Box width="100%" display='flex' justifyContent='center'>
-                        <Button
-                            variant="contained"
-                            onClick={handleSubmit}
-                            disabled={isLogin}
-                            endIcon={isLogin ? <CircularProgress size={20} variant="indeterminate" color="inherit" /> : undefined}
-                        >
-                            Entrar
-                        </Button>
-                    </Box>
-                </CardActions>
-            </Card>
-        </Box>
+        })
+        .catch((errors: yup.ValidationError) => {
+          setIsLoading(false);
+  
+          errors.inner.forEach(error => {
+            if (error.path === 'email') {
+              setEmailError(error.message);
+            } else if (error.path === 'password') {
+              setPasswordError(error.message);
+            }
+          });
+        });
+    };
+  
+  
+    if (isAuthenticated) return (
+      <>{children}</>
     );
-}
+  
+    return (
+      <Box width='100vw' height='100vh' display='flex' alignItems='center' justifyContent='center'>
+  
+        <Card>
+          <CardContent>
+            <Box display='flex' flexDirection='column' gap={2} width={350}>
+              <Typography variant='h6' align='center'>Identifique-se</Typography>
+  
+              <TextField
+                fullWidth
+                type='email'
+                label='Email'
+                value={email}
+                disabled={isLoading}
+                error={!!emailError}
+                helperText={emailError}
+                onKeyDown={() => setEmailError('')}
+                onChange={e => setEmail(e.target.value)}
+              />
+  
+              <TextField
+                fullWidth
+                label='Senha'
+                type='password'
+                value={password}
+                disabled={isLoading}
+                error={!!passwordError}
+                helperText={passwordError}
+                onKeyDown={() => setPasswordError('')}
+                onChange={e => setPassword(e.target.value)}
+              />
+            </Box>
+          </CardContent>
+          <CardActions>
+            <Box width='100%' display='flex' justifyContent='center'>
+  
+              <Button
+                variant='contained'
+                disabled={isLoading}
+                onClick={handleSubmit}
+                endIcon={isLoading ? <CircularProgress variant='indeterminate' color='inherit' size={20} /> : undefined}
+              >
+                Entrar
+              </Button>
+  
+            </Box>
+          </CardActions>
+        </Card>
+      </Box>
+    );
+  };
