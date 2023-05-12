@@ -1,6 +1,6 @@
 
-# Template para projetos de cadastros
-## Este template foi criado para facilitar a criação de projetos de cadastros, com a estrutura de pastas e arquivos já prontas para uso.
+# Template para projetos de cadastros e agendamentos.
+## Este template foi criado para facilitar a criação de projetos de cadastros e agendamentos, com a estrutura de pastas e arquivos já prontas para uso.
 - ### Utilizando React JS com Typescript, NextJS como framework e Material UI na utilização de componentes.
 - ### Utilizando JSON Server para simular uma API REST.
 
