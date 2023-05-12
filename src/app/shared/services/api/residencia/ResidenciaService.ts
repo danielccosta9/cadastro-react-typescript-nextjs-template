@@ -3,11 +3,13 @@ import { Api } from "../axios-config";
 
 export interface IListagemResidencia {
     id: number;
+    tipo: string;
     nome: string;
 }
 
 export interface IDetalhesResidencia {
     id: number;
+    tipo: string;
     nome: string;
 }
 

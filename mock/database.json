@@ -37,7 +37,7 @@
       "pacienteNascimento": "01/01/1990",
       "pacienteCPF": "123.456.789-10",
       "pacienteTelefone": "(83) 99999-9999",
-      "residenciaId": 1,
+      "residenciaId": 5,
       "pacienteComorbidade": "SEM COMORBIDADE"
     },
     {
@@ -177,35 +177,38 @@
   "residencia": [
     {
       "id": 1,
+      "tipo": "",
       "nome": "CENTRO"
     },
     {
       "id": 2,
+      "tipo": "",
       "nome": "ZONA RURAL"
     },
     {
       "id": 3,
-      "nome": "BAIRRO - BELA VISTA"
+      "tipo": "BAIRRO",
+      "nome": "BELA VISTA"
     },
     {
       "id": 4,
-      "nome": "BAIRRO - CASTELO BRANCO"
+      "tipo": "BAIRRO",
+      "nome": "CASTELO BRANCO"
     },
     {
       "id": 5,
-      "nome": "SÍTIO - OLHO D'ÁGUA"
+      "tipo": "SÍTIO",
+      "nome": "OLHO D'ÁGUA"
     },
     {
       "id": 6,
-      "nome": "SÍTIO - SÃO JOÃO"
+      "tipo": "SÍTIO",
+      "nome": "SÃO JOÃO"
     },
     {
-      "nome": "SÍTIO - CIPOAL",
+      "nome": "CIPOAL",
+      "tipo": "SÍTIO",
       "id": 7
-    },
-    {
-      "nome": "SÍTIO - CANAFISTULA",
-      "id": 8
     }
   ]
 }

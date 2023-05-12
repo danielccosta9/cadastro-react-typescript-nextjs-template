@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Box, Grid, LinearProgress, Paper, Typography } from '@mui/material';
+import { Autocomplete, Box, Grid, LinearProgress, Paper, Typography } from '@mui/material';
 import { Form } from '@unform/web';
 import * as yup from 'yup';
 
@@ -11,11 +11,14 @@ import { IVFormErrors, VTextField, useVForm } from '@/app/shared/forms';
 
 
 interface IFormData {
+  tipo: string;
   nome: string;
 }
 const formValidationSchema: yup.Schema<IFormData> = yup.object().shape({
+  tipo: yup.string().required('Opção de local é obrigatório'),
   nome: yup.string().required('Nome é obrigatório').min(3),
 });
+
 
 export const DetalheDeResidencias: React.FC = () => {
   const { formRef, save, saveAndClose, isSaveAndClose } = useVForm();
@@ -24,6 +27,7 @@ export const DetalheDeResidencias: React.FC = () => {
 
 
   const [isLoading, setIsLoading] = useState(false);
+  const [tipo, setTipo] = useState('');
   const [nome, setNome] = useState('');
 
   useEffect(() => {
@@ -37,12 +41,14 @@ export const DetalheDeResidencias: React.FC = () => {
             alert(result.message);
             navigate('/residencia');
           } else {
+            setTipo(result.tipo);
             setNome(result.nome);
             formRef.current?.setData(result);
           }
         });
     } else {
       formRef.current?.setData({
+        tipo: '',
         nome: '',
       });
     }
@@ -112,10 +118,16 @@ export const DetalheDeResidencias: React.FC = () => {
     }
   };
 
+  const optionResidencia = [
+    { value: 1, label: 'BAIRRO' },
+    { value: 2, label: 'SÍTIO' },
+  ];
+  
+
 
   return (
     <LayoutBaseDePagina
-      titulo={id === 'nova' ? 'Nova Localidade' : nome}
+      titulo={id === 'nova' ? 'Nova Localidade' : `${tipo} - ${nome}`}
       barraDeFerramentas={
         <FerramentasDeDetalhe
           textoBotaoNovo='Nova'
@@ -146,6 +158,19 @@ export const DetalheDeResidencias: React.FC = () => {
 
           <Grid container direction="row" padding={2} spacing={2}>
             <Grid item xs={12} sm={6}>
+              <Autocomplete
+                options={
+                  optionResidencia.map((tipo) => tipo.label)
+                }
+                onInputChange={(event, value) => setTipo(value)}
+                getOptionLabel={(tipo) => tipo.toString()} 
+                renderInput={(params) => <VTextField {...params} name='tipo' label='Tipo' variant='outlined' fullWidth disabled={isLoading} value='local'/>}
+                onChange={(_, value) => setTipo(value?.toString() || '')}
+                value={tipo}
+                
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
               <VTextField
                 name='nome'
                 label='Nome'
@@ -161,3 +186,7 @@ export const DetalheDeResidencias: React.FC = () => {
     </LayoutBaseDePagina>
   );
 };
+
+function setOpcoes(arg0: any) {
+  throw new Error('Function not implemented.');
+}

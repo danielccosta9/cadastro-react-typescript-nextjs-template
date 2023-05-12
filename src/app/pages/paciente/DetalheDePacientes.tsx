@@ -23,7 +23,7 @@ interface IFormData {
 const formValidationSchema: yup.Schema<IFormData> = yup.object().shape({
   pacienteNome: yup.string().required('O nome é obrigatório').min(3, 'O nome deve ter no mínimo 3 caracteres').matches(/^[a-zA-Z\s]*$/, 'Não pode conter números'),
   pacienteCPF: yup.string().required('O CPF é obrigatório').min(14, 'O CPF deve ter no mínimo 11 caracteres'),
-  pacienteNascimento: yup.string().required('A data de nascimento é obrigatória'),
+  pacienteNascimento: yup.string().required('A data de nascimento é obrigatória').min(10, 'A data de nascimento está inválida'),
   pacienteTelefone: yup.string().required('O telefone é obrigatório').min(14, 'O telefone deve ter no mínimo 11 caracteres'),
   residenciaId: yup.number().required('A residência é obrigatória'),
   pacienteComorbidade: yup.string().required('A comorbidade é obrigatória').min(3, 'A comorbidade deve ter no mínimo 3 caracteres').matches(/^[a-zA-Z\s]*$/, 'Não pode conter números'),

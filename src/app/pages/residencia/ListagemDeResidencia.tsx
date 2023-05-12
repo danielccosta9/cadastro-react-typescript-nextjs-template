@@ -94,7 +94,7 @@ export const ListagemDeResidencias: React.FC = () => {
                 <Table>
                     <TableHead>
                         <TableRow>
-                            <TableCell align="left">Nome do Bairro ou Sítio</TableCell>
+                            <TableCell align="left">Nome do Local</TableCell>
                             <TableCell width={100} align="center">Ação</TableCell>
                         </TableRow>
                     </TableHead>
@@ -105,7 +105,9 @@ export const ListagemDeResidencias: React.FC = () => {
                                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                 hover
                             >
-                                <TableCell align="left">{residencia.nome}</TableCell>
+                                <TableCell align="left">
+                                     {residencia.tipo} - {residencia.nome} 
+                                     </TableCell>
                                 <TableCell align="right">
                                     <IconButton
                                         onClick={handleDelete.bind(this, residencia.id)}
