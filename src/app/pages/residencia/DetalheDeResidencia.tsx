@@ -15,7 +15,7 @@ interface IFormData {
   nome: string;
 }
 const formValidationSchema: yup.Schema<IFormData> = yup.object().shape({
-  tipo: yup.string().required('Opção de local é obrigatório'),
+  tipo: yup.string().required('Tipo de local é obrigatório'),
   nome: yup.string().required('Nome é obrigatório').min(3),
 });
 
@@ -164,7 +164,7 @@ export const DetalheDeResidencias: React.FC = () => {
                 }
                 onInputChange={(event, value) => setTipo(value)}
                 getOptionLabel={(tipo) => tipo.toString()} 
-                renderInput={(params) => <VTextField {...params} name='tipo' label='Tipo' variant='outlined' fullWidth disabled={isLoading} value='local'/>}
+                renderInput={(params) => <VTextField {...params} name='tipo' label='Tipo' variant='outlined' fullWidth disabled={isLoading} value='tipo'/>}
                 onChange={(_, value) => setTipo(value?.toString() || '')}
                 value={tipo}
                 

@@ -209,6 +209,11 @@
       "nome": "CIPOAL",
       "tipo": "SÍTIO",
       "id": 7
+    },
+    {
+      "tipo": "BAIRRO",
+      "nome": "TESTE",
+      "id": 8
     }
   ]
 }

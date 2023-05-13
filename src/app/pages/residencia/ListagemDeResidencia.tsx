@@ -106,8 +106,11 @@ export const ListagemDeResidencias: React.FC = () => {
                                 hover
                             >
                                 <TableCell align="left">
-                                     {residencia.tipo} - {residencia.nome} 
-                                     </TableCell>
+                                    {
+                                        residencia.tipo === '' ? residencia.nome 
+                                        : `${residencia.tipo} - ${residencia.nome}`
+                                    }
+                                </TableCell>
                                 <TableCell align="right">
                                     <IconButton
                                         onClick={handleDelete.bind(this, residencia.id)}
